@@ -21,7 +21,7 @@ When our game is launched, the user is prompted for game modes(either single pla
 When a user enters a game, it will start after a three second delay under Time Attack rules (Users have two minutes to clear as many lines as possible). If in multiplayer mode, clearing lines on any side will send lines to the other side. At the end of the game, scores will be recorded and listed in the Scoreboard. Users will be prompted to enter their name if their score makes it into the top 10 scores. The player can view the scoreboard at any time by clicking scoreboard on the main menu.
 
 
-Technical Design
+Technical Design:
 We will be allocating memory to create a 2D array of the Tetris board. 
 The graphics of the game will be drawn with the SDL library (version 2.0.5).
 
@@ -30,6 +30,11 @@ Hosting a game will involve a handshake between a connecting player and the host
 We will generate the AI by forking the main process + executing a programmed tetris script. We will then signal it to exit once the game has ended.
 
 Writing or reading from the scoreboard will access scoreboard.txt, a file stored on the client side.
+
+Tasks:
+Tao Lin: Server/PVP, Leaderboard
+Harry Lum: board, pieces, user interface
+Michael Woo: game mechanics, tetris AI
 
 
 Timeline:
