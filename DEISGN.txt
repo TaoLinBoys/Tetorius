@@ -1,0 +1,45 @@
+Tao Lin     p10
+Harry Lum   p10
+Michael Woo p5
+
+Purpose:
+Our goal is to recreate the popular time attack retro arcade game, Tetris, implementing the following features:
+A single player mode 
+1 vs. 1 mode 
+Player vs AI mode
+Scoreboard
+
+User interface and game layout:
+
+When our game is launched, the user is prompted for game modes(either single player, vs AI, or PVP). They can also view their top scores if they choose to.
+
+If single player is launched, then the user will enter a single player game after a three second delay. 
+	
+
+If PVP is launched, the user will enter a screen that will display any lobbies waiting for players. The user will have the option to join a lobby or create a new lobby. 
+If the user chooses to host a lobby, the user will be prompted to choose between PVP or vs AI. 
+If they choose PVP, the user will be prompted enter a name for the lobby. Then the user will wait for another player to connect before the user enters the game.
+If they choose vs AI, the user will be prompted to select a difficulty before the user enters the game.
+
+
+When a user enters a game, it will start after a three second delay under Time Attack rules (Users have two minutes to clear as many lines as possible). If in multiplayer mode, clearing lines on any side will send lines to the other side. At the end of the game, scores will be recorded and listed in the Scoreboard. Users will be prompted to enter their name if their score makes it into the top 10 scores. The player can view the scoreboard at any time by clicking scoreboard on the main menu.
+
+Technical Design
+
+We will be allocating memory to create a 2D array of the Tetris board. 
+The graphics of the game will be drawn with the SDL library (version 2.0.5).
+
+Hosting a game will involve a handshake between a connecting player and the host, and networking will be involved so that the two players can play on different computers.
+
+We will generate the AI by forking the main process + executing a programmed tetris script. We will then signal it to exit once the game has ended.
+
+Writing or reading from the scoreboard will access scoreboard.txt, a file stored on the client side.
+
+
+Timeline:
+Jan 6th: Upload Design Doc to Github
+Jan 8th: Board, pieces, and scoreboard created. Game mode arguments and EXIT.
+Jan 11th: Game mechanics working
+Jan 13th: Server/pvp working
+Jan 16th: Tetris AI
+Jan 20th: fin
