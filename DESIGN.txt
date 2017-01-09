@@ -45,8 +45,8 @@ Michael Woo: game mechanics, tetris AI
 
 Timeline:
 Jan 6th: Upload Design Doc to Github
-Jan 8th: Board, pieces, and scoreboard created. Game mode arguments and EXIT.
-Jan 11th: Game mechanics working
-Jan 13th: Server/pvp working
-Jan 16th: Tetris AI
-Jan 20th: fin
+Jan 14th: Board, pieces, and scoreboard created. Game mode arguments and EXIT.
+Jan 15th: Game mechanics working
+Jan 20th: Server/pvp working
+Jan 22th: Tetris AI
+Jan 24th: fin
