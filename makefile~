@@ -1,7 +1,0 @@
-tetris: tetris.c
-	gcc tetris.c 'sdl-config --libs' -o tetris
-run:
-	./tetris
-clean:
-	rm tetris
-	rm *~
