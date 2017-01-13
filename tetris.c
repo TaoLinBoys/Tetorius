@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-#include <SDL2/SDL.h>
->>>>>>> b729198c4377a3bb168a41566f4bff654d4472a5
 #include <stdio.h>
 #include <stdlib.h>
 
