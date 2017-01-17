@@ -4,20 +4,11 @@
 #define SDL_MAIN_HANDLED
 #include "SDL2/SDL.h"
 
-const int SCREEN_WIDTH = 200;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1024;
+const int SCREEN_HEIGHT = 768;
 
 /*
 SDL_MOUSEBUTTONUP
-SDL_RECT  .x .y .w .h
-SDL_bool SDL_HasIntersection(const SDL_Rect* A,
-                             const SDL_Rect* B)
-
-//draw the 4 rects in a tetrmino , https://wiki.libsdl.org/SDL_RenderDrawRects
-int SDL_RenderDrawRects(SDL_Renderer*   renderer,
-                        const SDL_Rect* rects,
-                        int             count) 
-
 
 //KEYBOARD EVENTS
 ex:
@@ -419,60 +410,78 @@ int main( int argc, char* args[] )
     SDL_Surface* screenSurface = NULL;
     SDL_Renderer* renderer = NULL;
     if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER) < 0 ){
-        printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+      printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
     } 
     else{
-        window = SDL_CreateWindow("Tetris",
-				  SDL_WINDOWPOS_UNDEFINED,
-				  SDL_WINDOWPOS_UNDEFINED,
-				  SCREEN_WIDTH,
-				  SCREEN_HEIGHT,
-				  SDL_WINDOW_SHOWN);
-        /*
+      window = SDL_CreateWindow("Tetris",
+				SDL_WINDOWPOS_UNDEFINED,
+				SDL_WINDOWPOS_UNDEFINED,
+				SCREEN_WIDTH,
+				SCREEN_HEIGHT,
+				SDL_WINDOW_SHOWN);
+      /*
         Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
         SDL Renderer* rend = SDL_CreateRenderer(win,-1,render_flags)
         if (!rend)
         {
-          printf("error creating renderer: %s\n", SDL_GetError());
-          SDL_DestroyWindow(window);
-          SDL_Quit();
+	printf("error creating renderer: %s\n", SDL_GetError());
+	SDL_DestroyWindow(window);
+	SDL_Quit();
         }
-        */
-	renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+      */
+      renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	       
-        if( window == NULL ){
-            printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-        }
-        else{
-            //Get window surface
-            screenSurface = SDL_GetWindowSurface( window );
+      if( window == NULL ){
+	printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+      }
+      else{
+	//Get window surface
+	screenSurface = SDL_GetWindowSurface( window );
 
-            //Fill the surface white
-            SDL_FillRect(screenSurface,
-			 NULL,
-			 SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-	    
-	    int rowe;
-	    for(rowe = 0; rowe <= 24; rowe++){
-	      printf("haha");
-	      SDL_RenderClear(renderer);
-	      SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
-	      SDL_RenderDrawLine(renderer,0,rowe*10,SCREEN_WIDTH, rowe*10); 
-	    }
-	    
-	    //Update the surface
-	    SDL_UpdateWindowSurface(window);
+	//Fill the surface white
+	SDL_FillRect(screenSurface,
+		     NULL,
+		     SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+	
 
-            //Wait two seconds
-            SDL_Delay(2000);
-        }
-    
-    //Destroy window
-    SDL_DestroyWindow( window );
+	//need to fix to match the size of the sdl window?? i think
+	int rowe;
+	for(rowe = 0; rowe <= 24; rowe++){
+	  printf("haha");
+	  SDL_RenderClear(renderer);
+	  SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+	  SDL_RenderDrawLine(renderer,0,rowe*10,SCREEN_WIDTH, rowe*10); 
+	}
+	   
+	//Drawing Rect test
+	SDL_Rect recttest;
+	recttest.x = 0;
+	recttest.y = 0;
+	recttest.w = 100;
+	recttest.h = 100;
+	/* drawing rect doesn't work
+	SDL_RenderDrawRect(SDL_Renderer* renderer,const SDL_Rect* recttest); 
+	//Update the surface
+	SDL_UpdateWindowSurface(window);
+	*/
+	int close_requested = 0;
 
-    //Quit SDL subsystems
+	while(!close_requested){
+	  //process events
+	  SDL_Event event;
+	  while (SDL_PollEvent(&event)){
+	     if (event.type ==SDL_QUIT){  
+	      close_requested = 1;       
+	      SDL_DestroyWindow( window );
+	      SDL_Quit();
+	      break;
+	     }
+	  }
+	}
+      }
+    }
+    SDL_DestroyWindow(window);
     SDL_Quit();
-
     return 0;
-    }   
+    
 }
