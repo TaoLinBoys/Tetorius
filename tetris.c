@@ -7,16 +7,129 @@
 const int SCREEN_WIDTH = 200;
 const int SCREEN_HEIGHT = 480;
 
+/*
+SDL_MOUSEBUTTONUP
+SDL_RECT  .x .y .w .h
+SDL_bool SDL_HasIntersection(const SDL_Rect* A,
+                             const SDL_Rect* B)
+
+//draw the 4 rects in a tetrmino , https://wiki.libsdl.org/SDL_RenderDrawRects
+int SDL_RenderDrawRects(SDL_Renderer*   renderer,
+                        const SDL_Rect* rects,
+                        int             count) 
+
+
+//KEYBOARD EVENTS
+ex:
+int close_requested = 0;
+
+while(!close_requested){
+  //process events
+  SDL_Event event;
+  while (SDL_PollEvent(&event)){
+    case SDL_QUIT:
+      close_requested = 1;
+      break;
+    case SDL_KEYDOWN:
+      switch (event.key.keysym.scancode){
+        case SDL_SCANCODE UP:
+          //do stuff
+          break;
+        case SDL_SCANCODE DOWN:
+          //do stuff
+          break;
+      }
+
+    }
+  }
+}
+
+  if(event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
+    printf("Physical %s key acting as %s key",
+      SDL_GetScancodeName(event->key.keysym.scancode),
+      SDL_GetKeyName(event->key.keysym.sym));
+
+
+
+//TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
+Uint32 delay = (level*1.2) * 1000
+SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
+                                      SDL_TimerCallback callback,
+                                        void*             param)
+
+//just some stuff im considering and looking at later. don't worry about this
+  private final Point[][][] Tetraminos = {
+    // I-Piece
+    {
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) },
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) }
+    },
+    
+    // J-Piece
+    {
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2) },
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 2) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 0) }
+    },
+    
+    // L-Piece
+    {
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 2) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2) },
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 0) },
+      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 0) }
+    },
+    
+    // O-Piece
+    {
+      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
+      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) }
+    },
+    
+    // S-Piece
+    {
+      { new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
+      { new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
+      { new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
+      { new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) }
+    },
+    
+    // T-Piece
+    {
+      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1) },
+      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
+      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 2) },
+      { new Point(1, 0), new Point(1, 1), new Point(2, 1), new Point(1, 2) }
+    },
+    
+    // Z-Piece
+    {
+      { new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
+      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) },
+      { new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
+      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) }
+    }
+  };
+
+*/
+//this is our backend board
 int board(){
   int i,j;
-  int** grid=(int**) malloc(sizeof(int*)*240);
+  int** grid=(int**) malloc(sizeof(int*)*260);
   for(i=0; i<10; i++){
     grid[i]=(int*) malloc(sizeof(int)*10);
-    for(j=0; j<24; j++){
+    for(j=0; j<26; j++){
       grid[i][j]=0;
     }
   }
 }
+
+//***MIGHT CHANGE PIECES
 
 //7 pieces, with 4 rotations each. Each is stored in a 5 by 5 matrix.
 //Hence, a 7x4x5x5 matrix.
@@ -305,7 +418,7 @@ int main( int argc, char* args[] )
     SDL_Window* window = NULL;
     SDL_Surface* screenSurface = NULL;
     SDL_Renderer* renderer = NULL;
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ){
+    if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER) < 0 ){
         printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
     } 
     else{
@@ -315,8 +428,18 @@ int main( int argc, char* args[] )
 				  SCREEN_WIDTH,
 				  SCREEN_HEIGHT,
 				  SDL_WINDOW_SHOWN);
-	renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-	
+        /*
+        Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+        SDL Renderer* rend = SDL_CreateRenderer(win,-1,render_flags)
+        if (!rend)
+        {
+          printf("error creating renderer: %s\n", SDL_GetError());
+          SDL_DestroyWindow(window);
+          SDL_Quit();
+        }
+        */
+	renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	       
         if( window == NULL ){
             printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
         }
