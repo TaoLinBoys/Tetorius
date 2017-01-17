@@ -7,6 +7,31 @@
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
+const int BOARD_WIDTH = 250;
+const int BOARD_HEIGHT = 600;
+
+const int P1_DISPLACEMENT_X = 50;
+const int P1_DISPLACEMENT_Y = 50;
+const int P2_DISPLACEMENT_X = 300;
+const int P2_DISPLACEMENT_Y = 50;
+
+
+typedef struct piece{
+  int rotation;
+  int x1;int y1;
+  int x2;int y2;
+  int x3;int y3; 
+  int x4;int y4;
+} struct_piece;
+
+piece T_BLOCK
+piece I_BLOCK
+
+
+
+
+
+
 /*
 SDL_MOUSEBUTTONUP
 
@@ -159,23 +184,25 @@ int main( int argc, char* args[] )
 		     NULL,
 		     SDL_MapRGB(screenSurface->format, 0, 0, 0));
 	
-
+	SDL_RenderClear( renderer );
+	
 	//need to fix to match the size of the sdl window?? i think
 	//background
+	/*
 	int row;
 	for(row = 0; row <= 24; row++){
 	  printf("haha");
-	  SDL_RenderClear(renderer);
-	  SDL_RenderDrawLine(renderer,0,row*10,SCREEN_WIDTH, row*10); 
+	  SDL_RenderDrawLine(renderer,0,row*20,SCREEN_WIDTH, row*20);
+	  SDL_RenderPresent(renderer);
 	}
-	   
+	*/ 
 	//Drawing Rect test
 	
 	SDL_Rect recttest;
-	recttest.x = 0;
-	recttest.y = 0;
-	recttest.w = 100;
-	recttest.h = 100;
+	recttest.x = P1_DISPLACEMENT_X;
+	recttest.y = P1_DISPLACEMENT_Y;
+	recttest.w = BOARD_WIDTH;
+	recttest.h = BOARD_HEIGHT;
 	SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
 	SDL_RenderDrawRect(renderer,&recttest);
 	SDL_RenderPresent(renderer);
