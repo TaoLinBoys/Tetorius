@@ -8,6 +8,7 @@
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
+//each block is 25x25
 const int BOARD_WIDTH = 250;
 const int BOARD_HEIGHT = 600;
 
@@ -18,20 +19,51 @@ const int P2_DISPLACEMENT_Y = 50;
 
 
 typedef struct piece{
-  int rotation;
   int x1;int y1; //coords of 4 blocks of tetromino
   int x2;int y2;
   int x3;int y3; 
   int x4;int y4;
 } struct_piece;
 
-struct piece T_BLOCK; 
-struct piece I_BLOCK;
-struct piece O_BLOCK;
-struct piece S_BLOCK;
-struct piece Z_BLOCK;
-struct piece L_BLOCK;
-struct piece J_BLOCK; 
+//x1 and y1 are ROTATION POINTS.
+struct_piece T_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 50, .y4 = 25,
+};
+
+struct_piece I_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 50, .y3 = 25,
+			.x4 = 75, .y4 = 25,
+};
+struct_piece O_BLOCK = {.x1 = 0,  .y1 = 0,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 25, .y4 = 25,
+};
+/*do later
+struct_piece S_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 50, .y4 = 25,
+};
+struct_piece Z_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 50, .y4 = 25,
+};
+struct_piece L_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 50, .y4 = 25,
+};
+struct_piece J_BLOCK = {.x1 = 25, .y1 = 25,
+			.x2 = 0,  .y2 = 25,
+			.x3 = 25, .y3 = 0,
+			.x4 = 50, .y4 = 25,
+};
+*/
 //piece allPieces[]={T_BLOCK,I_BLOCK,O_BLOCK,S_BLOCK,Z_BLOCK,L_BLOCK,J_BLOCK};
 
 /*
@@ -231,19 +263,40 @@ int main( int argc, char* args[] )
 	  SDL_RenderDrawLine(renderer,0,row*20,SCREEN_WIDTH, row*20);
 	  SDL_RenderPresent(renderer);
 	}
-	*/ 
-	//Drawing Rect test
+	*/
 	
-	SDL_Rect recttest;
-	recttest.x = P1_DISPLACEMENT_X;
-	recttest.y = P1_DISPLACEMENT_Y;
-	recttest.w = BOARD_WIDTH;
-	recttest.h = BOARD_HEIGHT;
+	//Drawing Board
+	SDL_Rect board;
+	board.x = P1_DISPLACEMENT_X;
+	board.y = P1_DISPLACEMENT_Y;
+	board.w = BOARD_WIDTH;
+	board.h = BOARD_HEIGHT;
 	SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-	SDL_RenderDrawRect(renderer,&recttest);
+	SDL_RenderDrawRect(renderer,&board);
 	SDL_RenderPresent(renderer);
-	//Update the surface
-	//SDL_UpdateWindowSurface(window);
+
+	//Drawing a block
+
+	//doesnt work
+	/*
+	struct_piece* piece = I_BLOCK;
+	SDL_SetRenderDrawColor( renderer, 102,51,153,255);
+	SDL_Rect block1 = {.x = piece->x1, .y = piece->y1,
+			   .w = 25, .h = 25,};
+	SDL_Rect block2 = {.x = piece->x2, .y = piece->y2,
+			   .w = 25, .h = 25,};
+	SDL_Rect block3 = {.x = piece->x3, .y = piece->y3,
+			   .w = 25, .h = 25,};
+	SDL_Rect block4 = {.x = piece->x4, .y = piece->y4,
+			   .w = 25, .h = 25,};
+	SDL_RenderFillRect(renderer,&block1);
+	SDL_RenderFillRect(renderer,&block2);
+	SDL_RenderFillRect(renderer,&block3);
+	SDL_RenderFillRect(renderer,&block4);
+	SDL_RenderPresent(renderer);
+	*/
+	
+
 	
 	int close_requested = 0;
 
