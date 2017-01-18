@@ -3,6 +3,7 @@
 
 #define SDL_MAIN_HANDLED
 #include "SDL2/SDL.h"
+//#include <time.h>
 
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
@@ -18,16 +19,51 @@ const int P2_DISPLACEMENT_Y = 50;
 
 typedef struct piece{
   int rotation;
-  int x1;int y1;
+  int x1;int y1; //coords of 4 blocks of tetromino
   int x2;int y2;
   int x3;int y3; 
   int x4;int y4;
 } struct_piece;
 
-piece T_BLOCK
-piece I_BLOCK
+struct piece T_BLOCK; 
+struct piece I_BLOCK;
+struct piece O_BLOCK;
+struct piece S_BLOCK;
+struct piece Z_BLOCK;
+struct piece L_BLOCK;
+struct piece J_BLOCK; 
+//piece allPieces[]={T_BLOCK,I_BLOCK,O_BLOCK,S_BLOCK,Z_BLOCK,L_BLOCK,J_BLOCK};
 
+/*
+int curr;
+int pieceQueue[];
+int x ; int y; //coords of origin of piece on the gameboard
 
+if (curr=7){  
+  shuffle(pieceQueue); //execute when you have gotten all 7 pieces
+  curr = 0;
+}
+
+//helpr functions
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void shuffle(int arr[]) {
+    srand(time(NULL));
+    int i;
+    for(i = 7; i > 0; i--) {
+        int j = rand() % (i+1);
+        swap(&arr[i], &arr[j]);
+	printf("pieces[%d] = %d",i,arr[j])
+    }
+}
+
+int collidesAt(int x,int y){
+ asjpdopadop
+ */
 
 
 
