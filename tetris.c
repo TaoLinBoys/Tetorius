@@ -157,6 +157,7 @@ int printBoard(){
   }
 }
 
+
 int nextPiece(){
   if (curr=7){  
     shuffle(pieceQueue); //execute when you have gotten all 7 pieces
@@ -235,7 +236,7 @@ int dropDown(struct_piece Piece){
   return 1;  
 }
 
-/*
+
 int updateBoard(){
 int i;
 for (i=0;i<4;i++){
@@ -244,6 +245,7 @@ for (i=0;i<4;i++){
    grid[x][y]=1;
 }
 }
+/*
 
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
@@ -306,70 +308,12 @@ SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
                                       SDL_TimerCallback callback,
                                         void*             param)
 
-//just some stuff im considering and looking at later. don't worry about this
-  private final Point[][][] Tetraminos = {
-    // I-Piece
-    {
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) },
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(1, 3) }
-    },
-    
-    // J-Piece
-    {
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 0) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 2) },
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 2) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 0) }
-    },
-    
-    // L-Piece
-    {
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(2, 2) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(0, 2) },
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(0, 0) },
-      { new Point(1, 0), new Point(1, 1), new Point(1, 2), new Point(2, 0) }
-    },
-    
-    // O-Piece
-    {
-      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) },
-      { new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1) }
-    },
-    
-    // S-Piece
-    {
-      { new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
-      { new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
-      { new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1) },
-      { new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) }
-    },
-    
-    // T-Piece
-    {
-      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1) },
-      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(1, 2) },
-      { new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(1, 2) },
-      { new Point(1, 0), new Point(1, 1), new Point(2, 1), new Point(1, 2) }
-    },
-    
-    // Z-Piece
-    {
-      { new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
-      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) },
-      { new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1) },
-      { new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(0, 2) }
-    }
-  };
-
-*/
+  */
 
 
 int main( int argc, char* args[] )
 {
+  
     SDL_Window* window = NULL;
     SDL_Surface* screenSurface = NULL;
     SDL_Renderer* renderer = NULL;
@@ -437,6 +381,23 @@ int main( int argc, char* args[] )
 	SDL_RenderDrawRect(renderer,&board);
 	SDL_RenderPresent(renderer);
 
+	//while()
+	int i,j;
+	SDL_Rect currentRect = {.w = 25,.h=25};
+	for(i=0; i<26; i++){
+	  for(j=0; j<10; j++){
+	    currentRect.x = i*25;
+	    currentRect.y = j*25;
+	    SDL_SetRenderDrawColor(renderer,255,0,0,0);
+	    SDL_RenderFillRect(renderer,&board);
+	  }
+	}
+	SDL_RenderPresent(renderer);
+	
+	//sleep(1000);
+	//updateBoard();
+	//endwhile
+
 	//Drawing a block
 
 	//doesnt work
@@ -451,6 +412,8 @@ int main( int argc, char* args[] )
 			   .w = 25, .h = 25,};
 	SDL_Rect block4 = {.x = piece->x4, .y = piece->y4,
 			   .w = 25, .h = 25,};
+	
+
 	SDL_RenderFillRect(renderer,&block1);
 	SDL_RenderFillRect(renderer,&block2);
 	SDL_RenderFillRect(renderer,&block3);
@@ -458,8 +421,8 @@ int main( int argc, char* args[] )
 	SDL_RenderPresent(renderer);
 	*/
 	
-
 	
+      
 	int close_requested = 0;
 
 	while(!close_requested){
