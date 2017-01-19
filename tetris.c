@@ -236,6 +236,15 @@ int dropDown(struct_piece Piece){
 }
 
 /*
+int updateBoard(){
+int i;
+for (i=0;i<4;i++){
+   int x=testPiece.xorigin + testPiece.x[i];
+   int y=testPiece.yorigin + testPiece.y[i];
+   grid[x][y]=1;
+}
+}
+
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
   for (int j = row-1; j > 0; j--) {
