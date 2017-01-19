@@ -19,11 +19,11 @@ const int P2_DISPLACEMENT_Y = 50;
 
 
 typedef struct piece{
-  int rotation = 0;
+  int rotation;
   int x[4];
   int y[4];
-  int xorigin = 5;
-  int yorigin = 2;
+  int xorigin;
+  int yorigin;
   /*
   int x1;int y1; //coords of 4 blocks of tetromino
   int x2;int y2;
@@ -32,163 +32,159 @@ typedef struct piece{
   */
 } struct_piece;
 
-struct_piece I_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
+struct_piece I_BLOCK;
+struct_piece J_BLOCK;
+struct_piece L_BLOCK;
+struct_piece O_BLOCK;
+struct_piece S_BLOCK;
+struct_piece T_BLOCK;
+struct_piece Z_BLOCK;
+
+int initPieces(){
+  //struct_piece I_BLOCK;
+  I_BLOCK.rotation = 0;
+  I_BLOCK.xorigin = 5;
+  I_BLOCK.yorigin = 2;
+  I_BLOCK.x[0] = -1;
+  I_BLOCK.y[0] = 0;
+  I_BLOCK.x[1] = 0;
+  I_BLOCK.y[1] = 0;
+  I_BLOCK.x[2] = 1;
+  I_BLOCK.y[2] = 0;
+  I_BLOCK.x[3] = 2;
+  I_BLOCK.y[3] = 0;
+  //struct_piece J_BLOCK;
+  J_BLOCK.rotation = 0;
+  J_BLOCK.xorigin = 5;
+  J_BLOCK.yorigin = 2;
+  J_BLOCK.x[0] = -1;
+  J_BLOCK.y[0] = 0;
+  J_BLOCK.x[1] = 0;
+  J_BLOCK.y[1] = 0;
+  J_BLOCK.x[2] = 1;
+  J_BLOCK.y[2] = 0;
+  J_BLOCK.x[3] = 2;
+  J_BLOCK.y[3] = 0;
+  //struct_piece L_BLOCK;
+  L_BLOCK.rotation = 0;
+  L_BLOCK.xorigin = 5;
+  L_BLOCK.yorigin = 2;
+  L_BLOCK.x[0] = -1;
+  L_BLOCK.y[0] = 0;
+  L_BLOCK.x[1] = 0;
+  L_BLOCK.y[1] = 0;
+  L_BLOCK.x[2] = 1;
+  L_BLOCK.y[2] = 0;
+  L_BLOCK.x[3] = 2;
+  L_BLOCK.y[3] = 0;
+  //struct_piece O_BLOCK;
+  O_BLOCK.rotation = 0;
+  O_BLOCK.xorigin = 5;
+  O_BLOCK.yorigin = 2;
+  O_BLOCK.x[0] = -1;
+  O_BLOCK.y[0] = 0;
+  O_BLOCK.x[1] = 0;
+  O_BLOCK.y[1] = 0;
+  O_BLOCK.x[2] = 1;
+  O_BLOCK.y[2] = 0;
+  O_BLOCK.x[3] = 2;
+  O_BLOCK.y[3] = 0;
+  //struct_piece S_BLOCK;
+  S_BLOCK.rotation = 0;
+  S_BLOCK.xorigin = 5;
+  S_BLOCK.yorigin = 2;
+  S_BLOCK.x[0] = -1;
+  S_BLOCK.y[0] = 0;
+  S_BLOCK.x[1] = 0;
+  S_BLOCK.y[1] = 0;
+  S_BLOCK.x[2] = 1;
+  S_BLOCK.y[2] = 0;
+  S_BLOCK.x[3] = 2;
+  S_BLOCK.y[3] = 0;
+  //struct_piece T_BLOCK;
+  T_BLOCK.rotation = 0;
+  T_BLOCK.xorigin = 5;
+  T_BLOCK.yorigin = 2;
+  T_BLOCK.x[0] = -1;
+  T_BLOCK.y[0] = 0;
+  T_BLOCK.x[1] = 0;
+  T_BLOCK.y[1] = 0;
+  T_BLOCK.x[2] = 1;
+  T_BLOCK.y[2] = 0;
+  T_BLOCK.x[3] = 2;
+  T_BLOCK.y[3] = 0;
+  //struct_piece Z_BLOCK;
+  Z_BLOCK.rotation = 0;
+  Z_BLOCK.xorigin = 5;
+  Z_BLOCK.yorigin = 2;
+  Z_BLOCK.x[0] = -1;
+  Z_BLOCK.y[0] = 0;
+  Z_BLOCK.x[1] = 0;
+  Z_BLOCK.y[1] = 0;
+  Z_BLOCK.x[2] = 1;
+  Z_BLOCK.y[2] = 0;
+  Z_BLOCK.x[3] = 2;
 }
-
-//didn't any other block besides I_BLOCK
-struct_piece J_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-
-struct_piece L_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-
-struct_piece O_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-
-struct_piece S_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-
-struct_piece T_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-
-struct_piece Z_BLOCK = {
-  x[0] = -1;
-  y[0] = 0;
-  x[1] = 0;
-  y[1] = 0;
-  x[2] = 1;
-  y[2] = 0;
-  x[3] = 2;
-  y[3] = 0;
-}
-//x1 and y1 are ROTATION POINTS.
-/*
-struct_piece T_BLOCK = {
-      .x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 50, .y4 = 25,
-};
-
-struct_piece I_BLOCK = {
-      .x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 50, .y3 = 25,
-			.x4 = 75, .y4 = 25,
-};
-struct_piece O_BLOCK = {
-      .x1 = 0,  .y1 = 0,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 25, .y4 = 25,
-};
-struct_piece S_BLOCK = {
-      .x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 50, .y4 = 25,
-};
-struct_piece Z_BLOCK = {
-      .x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 50, .y4 = 25,
-};
-struct_piece L_BLOCK = {
-      .x1 = -1, .y1 = 0,
-			.x2 = 0,  .y2 = 0,
-			.x3 = 1, .y3 = 0,
-			.x4 = 1, .y4 = 1,
-};
-struct_piece J_BLOCK = {
-      .x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 50, .y4 = 25,
-};
+//struct_piece allPieces[]={I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK};
 
 
-*/
-//piece allPieces[]={T_BLOCK,I_BLOCK,O_BLOCK,S_BLOCK,Z_BLOCK,L_BLOCK,J_BLOCK};
-
-/*
 int curr;
-piece currPiece;
-piece testPiece; //testing for collisions
-int pieceQueue[];
+struct_piece currPiece;
+struct_piece testPiece; //testing for collisions
+int pieceQueue[7];
+int **grid;
 
-if (curr=7){  
-  shuffle(pieceQueue); //execute when you have gotten all 7 pieces
-  curr = 0;
+//this is our backend board
+int board(){
+  int i,j;
+  grid=(int**) malloc(sizeof(int*)*260);
+  for(i=0; i<26; i++){
+    grid[i]=(int*) malloc(sizeof(int)*26);
+    for(j=0; j<10; j++){
+      grid[i][j]=0;
+    }
+  }
+}
+
+//for debugging
+int printBoard(){
+  int i,j;
+  for(i=0; i<26; i++){
+    for(j=0; j<10; j++){
+      printf("%d ",grid[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+int nextPiece(){
+  if (curr=7){  
+    shuffle(pieceQueue); //execute when you have gotten all 7 pieces
+    curr = 0;
+  }
+  curr++;
+  printf("curr= %d",curr);
 }
 
 //helpr functions
-void swap(int *a, int *b) {
+int swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
 
-void shuffle(int arr[]) {
+int shuffle(int arr[]) {
     srand(time(NULL));
     int i;
     for(i = 7; i > 0; i--) {
         int j = rand() % (i+1);
         swap(&arr[i], &arr[j]);
-	printf("pieces[%d] = %d",i,arr[j])
+	printf("pieces[%d] = %d",i,arr[j]);
     }
 }
 
 
-int rotate(piece Piece,int i){
+int rotate(struct_piece Piece,int i){
   int newRotation = (Piece.rotation + i) % 4;
     if (newRotation < 0) {
       newRotation = 3;
@@ -198,46 +194,48 @@ int rotate(piece Piece,int i){
   int j; 
   if (i>0){  //clockwise rotation
     for (j=0; j<4;j++){
-      newX = Piece.y[j];
-      newY = Piece.x[j] * (-1);
+      int newX = Piece.y[j];
+      int newY = Piece.x[j] * (-1);
       Piece.x[j] = newX;
       Piece.y[j] = newY;
     }
   }
   if (i<0){  //counterclockwise rotation
     for (j=0; j<4;j++){
-      newX = Piece.y[j] * (-1);
-      newY = Piece.x[j];
+      int newX = Piece.y[j] * (-1);
+      int newY = Piece.x[j];
       Piece.x[j] = newX;
       Piece.y[j] = newY;
     }
   }
   return 1;
-
 }
 
-int collidesAt(piece Piece){
+
+int collidesAt(struct_piece Piece){
   int i;
   for(i=0;i<4;i++){
-    x = Piece.x[i] + Piece.xorigin;
-    y = Piece.y[i] + Piece.yorigin;
+    int x = Piece.x[i] + Piece.xorigin;
+    int y = Piece.y[i] + Piece.yorigin;
     if(!grid[x][y]) return 1; 
   }
   return 0;
  }
 
+
 //int isLowest : tests if the piece can go any lower
 
-int move(piece Piece,int x){
+int move(struct_piece Piece,int x){
   Piece.xorigin+=x;
   return 1;
 }
 
-int dropDown(piece Piece){
+int dropDown(struct_piece Piece){
   Piece.yorigin++;
   return 1;  
 }
 
+/*
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
   for (int j = row-1; j > 0; j--) {
@@ -254,17 +252,7 @@ int isDie(){
 }
 
  */
-//this is our backend board
-int board(){
-  int i,j;
-  int** grid=(int**) malloc(sizeof(int*)*260);
-  for(i=0; i<10; i++){
-    grid[i]=(int*) malloc(sizeof(int)*10);
-    for(j=0; j<26; j++){
-      grid[i][j]=0;
-    }
-  }
-}
+
 
 
 
@@ -422,7 +410,14 @@ int main( int argc, char* args[] )
 	  SDL_RenderPresent(renderer);
 	}
 	*/
-	
+
+	//testing stuff
+	board();
+	printBoard();
+
+
+
+
 	//Drawing Board
 	SDL_Rect board;
 	board.x = P1_DISPLACEMENT_X;
