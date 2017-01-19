@@ -1,0 +1,13 @@
+--Devlog--
+Harry -- 2017-01-11
+SDL window init
+Getting started with SDL
+
+All Members -- 2017-01-17 in class
+worked on rendering and background
+
+Michael -- 2017-01-18 in class
+generate pieces function
+
+Tao,Harry -- 2017-01-18 in class
+worked on pieces

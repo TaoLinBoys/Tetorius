@@ -19,57 +19,151 @@ const int P2_DISPLACEMENT_Y = 50;
 
 
 typedef struct piece{
+  int rotation = 0;
+  int x[4];
+  int y[4];
+  int xorigin = 5;
+  int yorigin = 2;
+  /*
   int x1;int y1; //coords of 4 blocks of tetromino
   int x2;int y2;
   int x3;int y3; 
   int x4;int y4;
+  */
 } struct_piece;
 
+struct_piece I_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+//didn't any other block besides I_BLOCK
+struct_piece J_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+struct_piece L_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+struct_piece O_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+struct_piece S_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+struct_piece T_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
+
+struct_piece Z_BLOCK = {
+  x[0] = -1;
+  y[0] = 0;
+  x[1] = 0;
+  y[1] = 0;
+  x[2] = 1;
+  y[2] = 0;
+  x[3] = 2;
+  y[3] = 0;
+}
 //x1 and y1 are ROTATION POINTS.
-struct_piece T_BLOCK = {.x1 = 25, .y1 = 25,
+/*
+struct_piece T_BLOCK = {
+      .x1 = 25, .y1 = 25,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 25, .y3 = 0,
 			.x4 = 50, .y4 = 25,
 };
 
-struct_piece I_BLOCK = {.x1 = 25, .y1 = 25,
+struct_piece I_BLOCK = {
+      .x1 = 25, .y1 = 25,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 50, .y3 = 25,
 			.x4 = 75, .y4 = 25,
 };
-struct_piece O_BLOCK = {.x1 = 0,  .y1 = 0,
+struct_piece O_BLOCK = {
+      .x1 = 0,  .y1 = 0,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 25, .y3 = 0,
 			.x4 = 25, .y4 = 25,
 };
-/*do later
-struct_piece S_BLOCK = {.x1 = 25, .y1 = 25,
+struct_piece S_BLOCK = {
+      .x1 = 25, .y1 = 25,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 25, .y3 = 0,
 			.x4 = 50, .y4 = 25,
 };
-struct_piece Z_BLOCK = {.x1 = 25, .y1 = 25,
+struct_piece Z_BLOCK = {
+      .x1 = 25, .y1 = 25,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 25, .y3 = 0,
 			.x4 = 50, .y4 = 25,
 };
-struct_piece L_BLOCK = {.x1 = 25, .y1 = 25,
+struct_piece L_BLOCK = {
+      .x1 = -1, .y1 = 0,
+			.x2 = 0,  .y2 = 0,
+			.x3 = 1, .y3 = 0,
+			.x4 = 1, .y4 = 1,
+};
+struct_piece J_BLOCK = {
+      .x1 = 25, .y1 = 25,
 			.x2 = 0,  .y2 = 25,
 			.x3 = 25, .y3 = 0,
 			.x4 = 50, .y4 = 25,
 };
-struct_piece J_BLOCK = {.x1 = 25, .y1 = 25,
-			.x2 = 0,  .y2 = 25,
-			.x3 = 25, .y3 = 0,
-			.x4 = 50, .y4 = 25,
-};
+
+
 */
 //piece allPieces[]={T_BLOCK,I_BLOCK,O_BLOCK,S_BLOCK,Z_BLOCK,L_BLOCK,J_BLOCK};
 
 /*
 int curr;
+piece currPiece;
+piece testPiece; //testing for collisions
 int pieceQueue[];
-int x ; int y; //coords of origin of piece on the gameboard
 
 if (curr=7){  
   shuffle(pieceQueue); //execute when you have gotten all 7 pieces
@@ -93,10 +187,84 @@ void shuffle(int arr[]) {
     }
 }
 
-int collidesAt(int x,int y){
- asjpdopadop
- */
 
+int rotate(piece Piece,int i){
+  int newRotation = (Piece.rotation + i) % 4;
+    if (newRotation < 0) {
+      newRotation = 3;
+    }
+  
+  //if O_BLOCK(square) don't rotate
+  int j; 
+  if (i>0){  //clockwise rotation
+    for (j=0; j<4;j++){
+      newX = Piece.y[j];
+      newY = Piece.x[j] * (-1);
+      Piece.x[j] = newX;
+      Piece.y[j] = newY;
+    }
+  }
+  if (i<0){  //counterclockwise rotation
+    for (j=0; j<4;j++){
+      newX = Piece.y[j] * (-1);
+      newY = Piece.x[j];
+      Piece.x[j] = newX;
+      Piece.y[j] = newY;
+    }
+  }
+  return 1;
+
+}
+
+int collidesAt(piece Piece){
+  int i;
+  for(i=0;i<4;i++){
+    x = Piece.x[i] + Piece.xorigin;
+    y = Piece.y[i] + Piece.yorigin;
+    if(!grid[x][y]) return 1; 
+  }
+  return 0;
+ }
+
+//int isLowest : tests if the piece can go any lower
+
+int move(piece Piece,int x){
+  Piece.xorigin+=x;
+  return 1;
+}
+
+int dropDown(piece Piece){
+  Piece.yorigin++;
+  return 1;  
+}
+
+//this is prob wrong. i'll fix later
+int deleteRow(int row){
+  for (int j = row-1; j > 0; j--) {
+      for (int i = 1; i < 11; i++) {
+        board[i-1][j+2] = board[i-1][j+1];
+      }
+    }
+  return 1;
+  }
+ 
+
+int isDie(){
+  return collidesAt(currPiece);
+}
+
+ */
+//this is our backend board
+int board(){
+  int i,j;
+  int** grid=(int**) malloc(sizeof(int*)*260);
+  for(i=0; i<10; i++){
+    grid[i]=(int*) malloc(sizeof(int)*10);
+    for(j=0; j<26; j++){
+      grid[i][j]=0;
+    }
+  }
+}
 
 
 
@@ -201,17 +369,7 @@ SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
   };
 
 */
-//this is our backend board
-int board(){
-  int i,j;
-  int** grid=(int**) malloc(sizeof(int*)*260);
-  for(i=0; i<10; i++){
-    grid[i]=(int*) malloc(sizeof(int)*10);
-    for(j=0; j<26; j++){
-      grid[i][j]=0;
-    }
-  }
-}
+
 
 int main( int argc, char* args[] )
 {
