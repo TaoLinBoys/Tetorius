@@ -81,26 +81,26 @@ int initPieces(){
   O_BLOCK.rotation = 0;
   O_BLOCK.xorigin = 5;
   O_BLOCK.yorigin = 2;
-  O_BLOCK.x[0] = -1;
+  O_BLOCK.x[0] = 0;
   O_BLOCK.y[0] = 0;
-  O_BLOCK.x[1] = 0;
+  O_BLOCK.x[1] = 1;
   O_BLOCK.y[1] = 0;
-  O_BLOCK.x[2] = 1;
-  O_BLOCK.y[2] = 0;
-  O_BLOCK.x[3] = 2;
-  O_BLOCK.y[3] = 0;
+  O_BLOCK.x[2] = 0;
+  O_BLOCK.y[2] = 1;
+  O_BLOCK.x[3] = 1;
+  O_BLOCK.y[3] = 1;
   //struct_piece S_BLOCK;
   S_BLOCK.rotation = 0;
   S_BLOCK.xorigin = 5;
   S_BLOCK.yorigin = 2;
-  S_BLOCK.x[0] = -1;
+  S_BLOCK.x[0] = 0;
   S_BLOCK.y[0] = 0;
-  S_BLOCK.x[1] = 0;
+  S_BLOCK.x[1] = 1;
   S_BLOCK.y[1] = 0;
-  S_BLOCK.x[2] = 1;
-  S_BLOCK.y[2] = 0;
-  S_BLOCK.x[3] = 2;
-  S_BLOCK.y[3] = 0;
+  S_BLOCK.x[2] = 0;
+  S_BLOCK.y[2] = 1;
+  S_BLOCK.x[3] = 1;
+  S_BLOCK.y[3] = 1;
   //struct_piece T_BLOCK;
   T_BLOCK.rotation = 0;
   T_BLOCK.xorigin = 5;
@@ -111,8 +111,8 @@ int initPieces(){
   T_BLOCK.y[1] = 0;
   T_BLOCK.x[2] = 1;
   T_BLOCK.y[2] = 0;
-  T_BLOCK.x[3] = 2;
-  T_BLOCK.y[3] = 0;
+  T_BLOCK.x[3] = 0;
+  T_BLOCK.y[3] = 1;
   //struct_piece Z_BLOCK;
   Z_BLOCK.rotation = 0;
   Z_BLOCK.xorigin = 5;
@@ -174,8 +174,6 @@ int initCurrPiece(){
   }
 }
    
-  
-
 int nextPiece(){
   if (curr=7){  
     shuffle(pieceQueue); //execute when you have gotten all 7 pieces
@@ -436,7 +434,7 @@ int main( int argc, char* args[] )
 	}
 	*/
 
-	//initializing board and pieces
+	//INITIALIZING BOARD AND PIECES
 	board();
 	initPieces();
 	initCurrPiece();
