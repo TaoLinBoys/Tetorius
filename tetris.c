@@ -245,6 +245,64 @@ for (i=0;i<4;i++){
    grid[x][y]=1;
 }
 }
+
+int resetTestPiece(){
+  testPiece.rotation = currPiece.rotation;
+  testPiece.xorigin = currPiece.xorigin;
+  testPiece.yorigin = currPiece.yorigin;
+  int i;
+  for(i=0;i<4;i++){
+    testPiece.x[i] = currPiece.x[i];
+    testPiece.y[i] = currPiece.y[i];  
+  }
+}
+
+//return 0 -> can't make move || return 1 -> possible move
+int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
+  if(action==0){
+    rotate(testPiece,1);
+    int valid = !(collidesAt(testPiece));
+    resetTestPiece();
+    if (valid) return 1;
+    else{return 0;}
+  }
+
+  if(action==1){
+    rotate(testPiece,-1);
+    int valid = !(collidesAt(testPiece));
+    resetTestPiece();
+    if (valid) return 1;
+    else{return 0;}
+  }
+
+  if(action==2){
+    move(testPiece,-1);
+    int valid = !(collidesAt(testPiece));
+    resetTestPiece();
+    if (valid) return 1;
+    else{return 0;}
+  }
+
+  if(action==3){
+    move(testPiece,1);
+    int valid = !(collidesAt(testPiece));
+    resetTestPiece();
+    if (valid) return 1;
+    else{return 0;}
+  }
+
+  if(action==4){
+    dropDown(testPiece);
+    int valid = !(collidesAt(testPiece));
+    resetTestPiece();
+    if (valid) return 1;
+    else{return 0;}
+  }
+
+}
+int isDie(){
+  return collidesAt(currPiece);
+}
 /*
 
 //this is prob wrong. i'll fix later
@@ -258,9 +316,7 @@ int deleteRow(int row){
   }
  
 
-int isDie(){
-  return collidesAt(currPiece);
-}
+
 
  */
 
@@ -381,22 +437,6 @@ int main( int argc, char* args[] )
 	SDL_RenderDrawRect(renderer,&board);
 	SDL_RenderPresent(renderer);
 
-	//while()
-	int i,j;
-	SDL_Rect currentRect = {.w = 25,.h=25};
-	for(i=0; i<26; i++){
-	  for(j=0; j<10; j++){
-	    currentRect.x = i*25;
-	    currentRect.y = j*25;
-	    SDL_SetRenderDrawColor(renderer,255,0,0,0);
-	    SDL_RenderFillRect(renderer,&board);
-	  }
-	}
-	SDL_RenderPresent(renderer);
-	
-	//sleep(1000);
-	//updateBoard();
-	//endwhile
 
 	//Drawing a block
 
@@ -429,6 +469,27 @@ int main( int argc, char* args[] )
 	  //process events
 	  SDL_Event event;
 	  while (SDL_PollEvent(&event)){
+      /*
+      switch(event.type){
+        case SDL_QUIT:
+          close_requested = 1;
+          break;
+        case SDL_KEYDOWN:
+          switch(event.key.keysym.scancode){
+            case SDL_SCANCODE_UP:
+              if (try(0)) rotate(currPiece,1);
+            case SDL_SCANCODE_RCTRL:
+              if (try(1)) rotate(currPiece,-1);
+            case SDL_SCANCODE_LEFT:
+              if (try(2)) move(currPiece,-1);
+            case SDL_SCANCODE_RIGHT:
+              if (try(3)) move(currPiece,1);
+            case SDL_SCANCODE_DOWN:
+              if (try(4)) dropDown(currPiece);
+            //save
+          }
+      }
+      */
 	     if (event.type ==SDL_QUIT){  
 	      close_requested = 1;       
 	      SDL_DestroyWindow( window );
@@ -436,8 +497,31 @@ int main( int argc, char* args[] )
 	      break;
 	     }
 	  }
-	}
+
+    int i,j;
+    SDL_Rect currentRect = {.w = 25,.h=25};
+    for(i=0; i<26; i++){
+      for(j=0; j<10; j++){
+        currentRect.x = i*25;
+        currentRect.y = j*25;
+        SDL_SetRenderDrawColor(renderer,255,0,0,0);
+        SDL_RenderFillRect(renderer,&board);
       }
+    } 
+    SDL_RenderPresent(renderer);
+
+    //wait 1/30th of a second
+    SDL_Delay(1000/30);
+  
+  //SDL_RenderClear(renderer);
+  //changes to window
+  //SDL_
+  //sleep(1000);
+  //updateBoard();
+  //
+  //endwhile
+	}
+  }
     }
     SDL_DestroyWindow(window);
     SDL_Quit();
