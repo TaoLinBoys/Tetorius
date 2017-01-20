@@ -125,6 +125,7 @@ int initPieces(){
   Z_BLOCK.y[2] = 0;
   Z_BLOCK.x[3] = 2;
 }
+
 //struct_piece allPieces[]={I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK};
 
 
@@ -157,6 +158,23 @@ int printBoard(){
   }
 }
 
+int initCurrPiece(){
+  int i;
+  for(i=0;i<7;i++) pieceQueue[i] = i;
+  shuffle(pieceQueue);
+  curr = 0;
+  switch (pieceQueue[curr]){
+  case 0: currPiece = I_BLOCK;
+  case 1: currPiece = J_BLOCK;
+  case 2: currPiece = L_BLOCK;
+  case 3: currPiece = O_BLOCK;
+  case 4: currPiece = S_BLOCK;
+  case 5: currPiece = T_BLOCK;
+  case 6: currPiece = Z_BLOCK;
+  }
+}
+   
+  
 
 int nextPiece(){
   if (curr=7){  
@@ -164,24 +182,24 @@ int nextPiece(){
     curr = 0;
   }
   curr++;
-  printf("curr= %d",curr);
+  printf("curr= %d\n",curr);
 }
 
 //helpr functions
 int swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+  int temp = *a;
+  *a = *b;
+  *b = temp;
 }
 
 int shuffle(int arr[]) {
-    srand(time(NULL));
-    int i;
-    for(i = 7; i > 0; i--) {
-        int j = rand() % (i+1);
-        swap(&arr[i], &arr[j]);
-	printf("pieces[%d] = %d",i,arr[j]);
-    }
+  srand(time(NULL));
+  int i;
+  for(i = 7; i > 0; i--) {
+    int j = rand() % (i+1);
+    swap(&arr[i], &arr[j]);
+    //printf("pieces[%d] = %d",i,arr[j]);
+  }
 }
 
 
@@ -218,10 +236,11 @@ int collidesAt(struct_piece Piece){
   for(i=0;i<4;i++){
     int x = Piece.x[i] + Piece.xorigin;
     int y = Piece.y[i] + Piece.yorigin;
-    if(!grid[x][y]) return 1; 
+    if(grid[x][y]) return 1;
   }
+  //printf("--doesn't collide\n");
   return 0;
- }
+}
 
 
 //int isLowest : tests if the piece can go any lower
@@ -236,14 +255,13 @@ int dropDown(struct_piece Piece){
   return 1;  
 }
 
-
-int updateBoard(){
-int i;
-for (i=0;i<4;i++){
-   int x=testPiece.xorigin + testPiece.x[i];
-   int y=testPiece.yorigin + testPiece.y[i];
-   grid[x][y]=1;
-}
+int updateBoard(){ //doesn't work properly
+  int i;
+  for (i=0;i<4;i++){
+    int x=testPiece.xorigin + testPiece.x[i];
+    int y=testPiece.yorigin + testPiece.y[i];
+    grid[x][y]=1;
+  }
 }
 
 int resetTestPiece(){
@@ -255,56 +273,63 @@ int resetTestPiece(){
     testPiece.x[i] = currPiece.x[i];
     testPiece.y[i] = currPiece.y[i];  
   }
+  //printf("reseted test piece\n");
+  return 1;
 }
 
 //return 0 -> can't make move || return 1 -> possible move
 int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
-  if(action==0){
+  int valid;
+  switch(action){
+  case 0:
+    printf("up pressed\n");
     rotate(testPiece,1);
-    int valid = !(collidesAt(testPiece));
+    valid = !(collidesAt(testPiece));
     resetTestPiece();
-    if (valid) return 1;
+    if (valid)return 1;
     else{return 0;}
-  }
-
-  if(action==1){
+ 
+  case 1:
+    printf("rctrl pressed\n");
     rotate(testPiece,-1);
-    int valid = !(collidesAt(testPiece));
+    valid = !(collidesAt(testPiece));
     resetTestPiece();
-    if (valid) return 1;
+    if (valid) {
+      return 1;
+      printf("asdas");}
     else{return 0;}
-  }
-
-  if(action==2){
+  
+  case 2:
+   printf("left pressed\n");
     move(testPiece,-1);
     int valid = !(collidesAt(testPiece));
     resetTestPiece();
     if (valid) return 1;
     else{return 0;}
-  }
 
-  if(action==3){
+  case 3:
+    printf("right pressed\n");
     move(testPiece,1);
-    int valid = !(collidesAt(testPiece));
+    valid = !(collidesAt(testPiece));
     resetTestPiece();
     if (valid) return 1;
     else{return 0;}
-  }
 
-  if(action==4){
+  case 4:
+    printf("down pressed\n");
     dropDown(testPiece);
-    int valid = !(collidesAt(testPiece));
+    valid = !(collidesAt(testPiece));
     resetTestPiece();
     if (valid) return 1;
-    else{return 0;}
+    else{return 0;}   
   }
 
 }
+
 int isDie(){
   return collidesAt(currPiece);
 }
 /*
-
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
   for (int j = row-1; j > 0; j--) {
@@ -315,15 +340,6 @@ int deleteRow(int row){
   return 1;
   }
  
-
-
-
- */
-
-
-
-
-/*
 SDL_MOUSEBUTTONUP
 
 //KEYBOARD EVENTS
@@ -420,9 +436,14 @@ int main( int argc, char* args[] )
 	}
 	*/
 
-	//testing stuff
+	//initializing board and pieces
 	board();
+	initPieces();
+	initCurrPiece();
+	//updateBoard(); //update board doesn't work properly
 	printBoard();
+	printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
+	//printBoard();
 
 
 
@@ -436,12 +457,9 @@ int main( int argc, char* args[] )
 	SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
 	SDL_RenderDrawRect(renderer,&board);
 	SDL_RenderPresent(renderer);
-
-
-	//Drawing a block
-
-	//doesnt work
-	/*
+	
+ 
+	/*Drawing a block
 	struct_piece* piece = I_BLOCK;
 	SDL_SetRenderDrawColor( renderer, 102,51,153,255);
 	SDL_Rect block1 = {.x = piece->x1, .y = piece->y1,
@@ -469,59 +487,61 @@ int main( int argc, char* args[] )
 	  //process events
 	  SDL_Event event;
 	  while (SDL_PollEvent(&event)){
-      /*
-      switch(event.type){
-        case SDL_QUIT:
-          close_requested = 1;
-          break;
-        case SDL_KEYDOWN:
-          switch(event.key.keysym.scancode){
-            case SDL_SCANCODE_UP:
-              if (try(0)) rotate(currPiece,1);
-            case SDL_SCANCODE_RCTRL:
-              if (try(1)) rotate(currPiece,-1);
-            case SDL_SCANCODE_LEFT:
-              if (try(2)) move(currPiece,-1);
-            case SDL_SCANCODE_RIGHT:
-              if (try(3)) move(currPiece,1);
-            case SDL_SCANCODE_DOWN:
-              if (try(4)) dropDown(currPiece);
-            //save
-          }
-      }
-      */
-	     if (event.type ==SDL_QUIT){  
-	      close_requested = 1;       
-	      SDL_DestroyWindow( window );
-	      SDL_Quit();
+      
+	    switch(event.type){
+	    case SDL_QUIT:
+	      close_requested = 1;
 	      break;
-	     }
+	    case SDL_KEYDOWN:
+	      switch(event.key.keysym.scancode){
+	      case SDL_SCANCODE_UP:
+		if (try(0)) rotate(currPiece,1);
+	      case SDL_SCANCODE_RCTRL:
+		if (try(1)) rotate(currPiece,-1);
+	      case SDL_SCANCODE_LEFT:
+		if (try(2)) move(currPiece,-1);
+	      case SDL_SCANCODE_RIGHT:
+		if (try(3)) move(currPiece,1);
+	      case SDL_SCANCODE_DOWN:
+		if (try(4)) dropDown(currPiece);
+	      }
+	      //save
+	    }
 	  }
+	  /*
+	    if (event.type ==SDL_QUIT){  
+	    close_requested = 1;       
+	    SDL_DestroyWindow( window );
+	    SDL_Quit();
+	    break;
+	    }
+	    }
+	  */
 
-    int i,j;
-    SDL_Rect currentRect = {.w = 25,.h=25};
-    for(i=0; i<26; i++){
-      for(j=0; j<10; j++){
-        currentRect.x = i*25;
-        currentRect.y = j*25;
-        SDL_SetRenderDrawColor(renderer,255,0,0,0);
-        SDL_RenderFillRect(renderer,&board);
-      }
-    } 
-    SDL_RenderPresent(renderer);
+	  int i,j;
+	  SDL_Rect currentRect = {.w = 25,.h=25};
+	  for(i=0; i<26; i++){
+	    for(j=0; j<10; j++){
+	      currentRect.x = i*25;
+	      currentRect.y = j*25;
+	      SDL_SetRenderDrawColor(renderer,255,0,0,0);
+	      SDL_RenderFillRect(renderer,&board);
+	    }
+	  } 
+	  SDL_RenderPresent(renderer);
 
-    //wait 1/30th of a second
-    SDL_Delay(1000/30);
+	  //wait 1/30th of a second
+	  SDL_Delay(1000/30);
   
-  //SDL_RenderClear(renderer);
-  //changes to window
-  //SDL_
-  //sleep(1000);
-  //updateBoard();
-  //
-  //endwhile
+	  //SDL_RenderClear(renderer);
+	  //changes to window
+	  //SDL_
+	  //sleep(1000);
+	  //updateBoard();
+	  //
+	  //endwhile
 	}
-  }
+      }
     }
     SDL_DestroyWindow(window);
     SDL_Quit();
