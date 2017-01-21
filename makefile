@@ -1,5 +1,5 @@
-tetris: tetris.c
-	gcc tetris.c $(shell pkg-config --cflags --libs sdl2) -o tetris
+tetris: tetris.c pieces.c
+	gcc tetris.c $(shell pkg-config --cflags --libs sdl2) pieces.c -o tetris
 
 networking: server client
 
@@ -20,6 +20,10 @@ networking.o: networking.c networking.h
 
 run:
 	./tetris
+
+run2:
+	./tetris2
+
 clean:
 	rm tetris
 	rm *~
