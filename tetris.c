@@ -268,22 +268,14 @@ int main( int argc, char* args[] )
 				SCREEN_WIDTH,
 				SCREEN_HEIGHT,
 				SDL_WINDOW_SHOWN);
-      /*
-        Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-        SDL Renderer* rend = SDL_CreateRenderer(win,-1,render_flags)
-        if (!rend)
-        {
-	printf("error creating renderer: %s\n", SDL_GetError());
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-        }
-      */
+
       renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	       
       if( window == NULL ){
 	printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
       }
       else{
+	/*
 	//Get window surface
 	screenSurface = SDL_GetWindowSurface( window );
 
@@ -293,17 +285,18 @@ int main( int argc, char* args[] )
 		     SDL_MapRGB(screenSurface->format, 0, 0, 0));
 	
 	SDL_RenderClear( renderer );
-	
+	*/
+
 	//need to fix to match the size of the sdl window?? i think
 	//background
-	/*
+	
 	int row;
 	for(row = 0; row <= 24; row++){
 	  printf("haha");
-	  SDL_RenderDrawLine(renderer,0,row*20,SCREEN_WIDTH, row*20);
+	  SDL_RenderDrawLine(renderer,P1_DISPLACEMENT_X,row*25,BOARD_WIDTH, row*20);
 	  SDL_RenderPresent(renderer);
-	}
-	*/
+        }
+	
 
 	//INITIALIZING BOARD AND PIECES
 	board();
@@ -328,24 +321,8 @@ int main( int argc, char* args[] )
 	SDL_RenderPresent(renderer);
 	
  
-	/*Drawing a block
-	struct_piece* piece = I_BLOCK;
-	SDL_SetRenderDrawColor( renderer, 102,51,153,255);
-	SDL_Rect block1 = {.x = piece->x1, .y = piece->y1,
-			   .w = 25, .h = 25,};
-	SDL_Rect block2 = {.x = piece->x2, .y = piece->y2,
-			   .w = 25, .h = 25,};
-	SDL_Rect block3 = {.x = piece->x3, .y = piece->y3,
-			   .w = 25, .h = 25,};
-	SDL_Rect block4 = {.x = piece->x4, .y = piece->y4,
-			   .w = 25, .h = 25,};
-	
-
-	SDL_RenderFillRect(renderer,&block1);
-	SDL_RenderFillRect(renderer,&block2);
+	/*
 	SDL_RenderFillRect(renderer,&block3);
-	SDL_RenderFillRect(renderer,&block4);
-	SDL_RenderPresent(renderer);
 	*/
 	
 	
