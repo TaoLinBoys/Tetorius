@@ -112,14 +112,32 @@ int collidesAt(struct_piece Piece){
 }
 
 
-//int isLowest : tests if the piece can go any lower
+int isLowest(struct_piece Piece){
+  if (dropDown(testPiece)){
+    if (collidesAt(testPiece)){return 1;}//does collides when testpiece is dropped
+    else{return 0;}      //test piece can drop without colliding
+  }
+  else{return 1;}            //cant drop down bc at bottom of board
+}
 
-int move(struct_piece Piece,int x){
-  Piece.xorigin+=x;
+int move(struct_piece Piece,int displacement){
+  int i;
+  int x;
+  for (i=0;i<4;i++){
+    x = Piece.x[i] + Piece.xorigin;
+    if (x+displacement<0 || x+displacement>10) return 0;
+  }
+  Piece.xorigin+=displacement;
   return 1;
 }
 
 int dropDown(struct_piece Piece){
+  int i;
+  int y;
+  for (i=0;i<4;i++){
+    y = Piece.y[i] + Piece.yorigin;
+    if (y+1>26) return 0;
+  }
   Piece.yorigin++;
   return 1;  
 }
@@ -211,44 +229,11 @@ int deleteRow(int row){
  
 SDL_MOUSEBUTTONUP
 
-//KEYBOARD EVENTS
-ex:
-int close_requested = 0;
-
-while(!close_requested){
-  //process events
-  SDL_Event event;
-  while (SDL_PollEvent(&event)){
-    case SDL_QUIT:
-      close_requested = 1;
-      break;
-    case SDL_KEYDOWN:
-      switch (event.key.keysym.scancode){
-        case SDL_SCANCODE UP:
-          //do stuff
-          break;
-        case SDL_SCANCODE DOWN:
-          //do stuff
-          break;
-      }
-
-    }
-  }
-}
-
-  if(event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
-    printf("Physical %s key acting as %s key",
-      SDL_GetScancodeName(event->key.keysym.scancode),
-      SDL_GetKeyName(event->key.keysym.sym));
-
-
-
 //TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
 Uint32 delay = (level*1.2) * 1000
 SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
                                       SDL_TimerCallback callback,
                                         void*             param)
-
   */
 
 
@@ -269,10 +254,10 @@ int main( int argc, char* args[] )
 				SCREEN_HEIGHT,
 				SDL_WINDOW_SHOWN);
 
-      renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	       
       if( window == NULL ){
-	printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+	       printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
       }
       else{
 	/*
@@ -298,16 +283,15 @@ int main( int argc, char* args[] )
         }
 	
 
-	//INITIALIZING BOARD AND PIECES
+	//INITIALIZING BOARD AND PIECES (backend)
 	board();
-	initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
+  printf("board initialized\n");
+  printBoard();
+  initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
 	initCurrPiece();
-	//updateBoard(); //update board doesn't work properly
-	printBoard();
-	printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-	//printBoard();
-
-
+  printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
+	updateBoard();
+  printBoard();
 
 
 	//Drawing Board
@@ -320,12 +304,9 @@ int main( int argc, char* args[] )
 	SDL_RenderDrawRect(renderer,&board);
 	SDL_RenderPresent(renderer);
 	
- 
 	/*
 	SDL_RenderFillRect(renderer,&block3);
 	*/
-	
-	
       
 	int close_requested = 0;
 
@@ -341,17 +322,18 @@ int main( int argc, char* args[] )
 	    case SDL_KEYDOWN:
 	      switch(event.key.keysym.scancode){
 	      case SDL_SCANCODE_UP:
-		if (try(0)) rotate(currPiece,1);
+		      if (try(0))rotate(currPiece,1);
 	      case SDL_SCANCODE_RCTRL:
-		if (try(1)) rotate(currPiece,-1);
+		      if (try(1)) rotate(currPiece,-1);
 	      case SDL_SCANCODE_LEFT:
-		if (try(2)) move(currPiece,-1);
+		      if (try(2)) move(currPiece,-1);
 	      case SDL_SCANCODE_RIGHT:
-		if (try(3)) move(currPiece,1);
+		      if (try(3)) move(currPiece,1);
 	      case SDL_SCANCODE_DOWN:
-		if (try(4)) dropDown(currPiece);
+		      if (try(4)) dropDown(currPiece);
 	      }
-	      //save
+        updateBoard();
+        //printBoard();
 	    }
 	  }
 	  /*
@@ -386,7 +368,7 @@ int main( int argc, char* args[] )
 	  //updateBoard();
 	  //
 	  //endwhile
-	}
+	 }
       }
     }
     SDL_DestroyWindow(window);
