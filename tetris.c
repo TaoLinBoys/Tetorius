@@ -98,8 +98,6 @@ int shuffle(int arr[]) {
   }
 }
 
-
-
 int collidesAt(struct_piece Piece){
   int i;
   for(i=0;i<4;i++){
@@ -260,119 +258,117 @@ int main( int argc, char* args[] )
 	       printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
       }
       else{
-	/*
-	//Get window surface
-	screenSurface = SDL_GetWindowSurface( window );
+        	/*
+        	//Get window surface
+        	screenSurface = SDL_GetWindowSurface( window );
 
-	//Fill the surface white
-	SDL_FillRect(screenSurface,
-		     NULL,
-		     SDL_MapRGB(screenSurface->format, 0, 0, 0));
-	
-	SDL_RenderClear( renderer );
-	*/
+        	//Fill the surface white
+        	SDL_FillRect(screenSurface,
+        		     NULL,
+        		     SDL_MapRGB(screenSurface->format, 0, 0, 0));
+        	
+        	SDL_RenderClear( renderer );
+        	*/
 
-	//need to fix to match the size of the sdl window?? i think
-	//background
-	
-	int row;
-	for(row = 0; row <= 24; row++){
-	  printf("haha");
-	  SDL_RenderDrawLine(renderer,P1_DISPLACEMENT_X,row*25,BOARD_WIDTH, row*20);
-	  SDL_RenderPresent(renderer);
+        	//need to fix to match the size of the sdl window?? i think
+        	//background
+        	
+        	int row;
+        	for(row = 0; row <= 24; row++){
+        	  printf("haha");
+        	  SDL_RenderDrawLine(renderer,P1_DISPLACEMENT_X,row*25,BOARD_WIDTH, row*20);
+        	  SDL_RenderPresent(renderer);
+                }
+        	
+
+        	//INITIALIZING BOARD AND PIECES (backend)
+        	board();
+          printf("board initialized\n");
+          printBoard();
+          initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
+        	initCurrPiece();
+          printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
+        	updateBoard();
+          printBoard();
+
+
+        	//Drawing Board
+        	SDL_Rect board;
+        	board.x = P1_DISPLACEMENT_X;
+        	board.y = P1_DISPLACEMENT_Y;
+        	board.w = BOARD_WIDTH;
+        	board.h = BOARD_HEIGHT;
+        	SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
+        	SDL_RenderDrawRect(renderer,&board);
+        	SDL_RenderPresent(renderer);
+        	
+        	/*
+        	SDL_RenderFillRect(renderer,&block3);
+        	*/
+              
+        	int close_requested = 0;
+
+        	while(!close_requested){
+        	  //process events
+        	  SDL_Event event;
+        	  while (SDL_PollEvent(&event)){
+              
+        	    switch(event.type){
+        	    case SDL_QUIT:
+        	      close_requested = 1;
+        	      break;
+        	    case SDL_KEYDOWN:
+        	      switch(event.key.keysym.scancode){
+        	      case SDL_SCANCODE_UP:
+        		      if (try(0))rotate(currPiece,1);
+        	      case SDL_SCANCODE_RCTRL:
+        		      if (try(1)) rotate(currPiece,-1);
+        	      case SDL_SCANCODE_LEFT:
+        		      if (try(2)) move(currPiece,-1);
+        	      case SDL_SCANCODE_RIGHT:
+        		      if (try(3)) move(currPiece,1);
+        	      case SDL_SCANCODE_DOWN:
+        		      if (try(4)) dropDown(currPiece);
+        	      }
+                updateBoard();
+                //printBoard();
+        	    }
+        	  }
+        	  /*
+        	    if (event.type ==SDL_QUIT){  
+        	    close_requested = 1;       
+        	    SDL_DestroyWindow( window );
+        	    SDL_Quit();
+        	    break;
+        	    }
+        	    }
+        	  */
+
+        	  int i,j;
+        	  SDL_Rect currentRect = {.w = 25,.h=25};
+        	  for(i=0; i<26; i++){
+        	    for(j=0; j<10; j++){
+        	      currentRect.x = P1_DISPLACEMENT_Y + i*25;
+        	      currentRect.y = P1_DISPLACEMENT_X + j*25;
+        	      if (grid[j][i]){
+                  SDL_SetRenderDrawColor(renderer,255,0,0,0);
+                }
+                else{
+                  SDL_SetRenderDrawColor(renderer,0,0,0,0); //black
+                }
+        	      SDL_RenderFillRect(renderer,&board);
+        	    }
+        	  } 
+        	  SDL_RenderPresent(renderer);
+            SDL_RenderClear(renderer);
+        	  //wait 1/30th of a second
+        	  SDL_Delay(1000/30);
+          
+        	 }
         }
-	
-
-	//INITIALIZING BOARD AND PIECES (backend)
-	board();
-  printf("board initialized\n");
-  printBoard();
-  initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
-	initCurrPiece();
-  printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-	updateBoard();
-  printBoard();
-
-
-	//Drawing Board
-	SDL_Rect board;
-	board.x = P1_DISPLACEMENT_X;
-	board.y = P1_DISPLACEMENT_Y;
-	board.w = BOARD_WIDTH;
-	board.h = BOARD_HEIGHT;
-	SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-	SDL_RenderDrawRect(renderer,&board);
-	SDL_RenderPresent(renderer);
-	
-	/*
-	SDL_RenderFillRect(renderer,&block3);
-	*/
-      
-	int close_requested = 0;
-
-	while(!close_requested){
-	  //process events
-	  SDL_Event event;
-	  while (SDL_PollEvent(&event)){
-      
-	    switch(event.type){
-	    case SDL_QUIT:
-	      close_requested = 1;
-	      break;
-	    case SDL_KEYDOWN:
-	      switch(event.key.keysym.scancode){
-	      case SDL_SCANCODE_UP:
-		      if (try(0))rotate(currPiece,1);
-	      case SDL_SCANCODE_RCTRL:
-		      if (try(1)) rotate(currPiece,-1);
-	      case SDL_SCANCODE_LEFT:
-		      if (try(2)) move(currPiece,-1);
-	      case SDL_SCANCODE_RIGHT:
-		      if (try(3)) move(currPiece,1);
-	      case SDL_SCANCODE_DOWN:
-		      if (try(4)) dropDown(currPiece);
-	      }
-        updateBoard();
-        //printBoard();
-	    }
-	  }
-	  /*
-	    if (event.type ==SDL_QUIT){  
-	    close_requested = 1;       
-	    SDL_DestroyWindow( window );
-	    SDL_Quit();
-	    break;
-	    }
-	    }
-	  */
-
-	  int i,j;
-	  SDL_Rect currentRect = {.w = 25,.h=25};
-	  for(i=0; i<26; i++){
-	    for(j=0; j<10; j++){
-	      currentRect.x = i*25;
-	      currentRect.y = j*25;
-	      SDL_SetRenderDrawColor(renderer,255,0,0,0);
-	      SDL_RenderFillRect(renderer,&board);
-	    }
-	  } 
-	  SDL_RenderPresent(renderer);
-
-	  //wait 1/30th of a second
-	  SDL_Delay(1000/30);
-  
-	  //SDL_RenderClear(renderer);
-	  //changes to window
-	  //SDL_
-	  //sleep(1000);
-	  //updateBoard();
-	  //
-	  //endwhile
-	 }
       }
-    }
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return 0;
+      SDL_DestroyWindow(window);
+      SDL_Quit();
+      return 0;
     
 }
