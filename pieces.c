@@ -115,3 +115,31 @@ int rotate(struct_piece Piece,int i){
   }
   return 1;
 }
+int dropDown(struct_piece Piece){
+  int i;
+  int y;
+  for (i=0;i<4;i++){
+    y = Piece.y[i] + Piece.yorigin;
+    if (y+1>26) return 0;
+  }
+  Piece.yorigin++;
+  return 1;  
+}
+
+
+//helpers
+int shuffle(int arr[]) {
+  srand(time(NULL));
+  int i;
+  for(i = 7; i > 0; i--) {
+    int j = rand() % (i+1);
+    swap(&arr[i], &arr[j]);
+    //printf("pieces[%d] = %d",i,arr[j]);
+  }
+}
+
+int swap(int *a, int *b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
