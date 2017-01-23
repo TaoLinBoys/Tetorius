@@ -139,12 +139,6 @@ int isLowest(struct_piece Piece){
 }
 
 struct_piece move(struct_piece Piece,int displacement){
-  int i;
-  int x;
-  for (i=0;i<4;i++){
-    x = Piece.x[i] + Piece.xorigin;
-    if (x+displacement<0 || x+displacement>10) return 0;
-  }
   Piece.xorigin+=displacement;
   return Piece;
 }
