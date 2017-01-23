@@ -93,10 +93,13 @@ int nextPiece(){
 
 int collidesAt(){
   int i;
+  //printBoard();
   removeFromBoard();
   for(i=0;i<4;i++){
-    int x = testPiece.x[i] + testPiece.xorigin;
+    int x = testPiece.x[i] + testPiece.xorigin + 1;
+    printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
+    if(x < 0 || x > 9 || y < 0 || y > 22) return 1;
     if(grid[x][y]) return 1;
   }
   updateBoard();
@@ -138,15 +141,9 @@ int isLowest(struct_piece Piece){
   return 0;
 }
 
-int move(struct_piece Piece,int displacement){
-  int i;
-  int x;
-  for (i=0;i<4;i++){
-    x = Piece.x[i] + Piece.xorigin;
-    if (x+displacement<0 || x+displacement>10) return 0;
-  }
+struct_piece move(struct_piece Piece,int displacement){
   Piece.xorigin+=displacement;
-  return 1;
+  return Piece;
 }
 
 int removeFromBoard(){
@@ -186,10 +183,10 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   int valid;
   switch(action){
   case 0:
-    printf("rotating: in try\n");
+    //printf("rotating: in try\n");
     rotate(testPiece,1);
     removeFromBoard();
-    printBoard();
+    //printBoard();
     printf("just removed from board\n");
     valid = !(collidesAt());
     printf("valid: %d \n",valid);
@@ -208,6 +205,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
   
   case 2:
+    
     move(testPiece,-1);
     int valid = !(collidesAt());
     resetTestPiece();
@@ -330,21 +328,21 @@ int main( int argc, char* args[] )
 	    case SDL_SCANCODE_RCTRL:
 	      if (try(1)){
 		removeFromBoard();
-		rotate(currPiece,-1);
+		currPiece = rotate(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)){
 		removeFromBoard();
-		move(currPiece,-1);
+		currPiece = move(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_RIGHT:
 	      if (try(3)){
 		removeFromBoard();
-		move(currPiece,1);
+		currPiece = move(currPiece,1);
 		updateBoard();
 	      }
 	      break;
@@ -354,11 +352,11 @@ int main( int argc, char* args[] )
 		currPiece = dropDown(currPiece);
 		updateBoard();
 		printf("printing board after dropdown now--");
-		printBoard();	
+		//printBoard();	
 	      }
 	      break;
 	    }
-	    printBoard();
+	    //printBoard();
 	  }
 	}
 	resetTestPiece();
