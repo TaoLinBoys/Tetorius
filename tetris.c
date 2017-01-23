@@ -1,5 +1,4 @@
 #include "pieces.h"
-#include "SDL2/SDL.h"
 #include "board.h"
 
 #define SDL_MAIN_HANDLED
@@ -11,15 +10,6 @@ int **grid;
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
 
-//set board size
-const int BOARD_WIDTH = 250;
-const int BOARD_HEIGHT = 600;
-
-//set board displacement from top left corner of window
-const int P1_DISPLACEMENT_X = 50;
-const int P1_DISPLACEMENT_Y = 50;
-const int P2_DISPLACEMENT_X = 300;
-const int P2_DISPLACEMENT_Y = 50;
 
 //pieces
 struct_piece I_BLOCK;
@@ -36,6 +26,28 @@ struct_piece testPiece; //testing for collisions
 
 int pieceQueue[7];
 
+//this is our backend board
+int board(){
+  int i,j;
+  grid=(int**) malloc(sizeof(int*)*220);
+  for(i=0; i<22; i++){
+    grid[i]=(int*) malloc(sizeof(int)*22);
+    for(j=0; j<10; j++){
+      grid[i][j]=0;
+    }
+  }
+}
+
+//for debugging
+int printBoard(){
+  int i,j;
+  for(i = 0; i<22; i++){
+    for(j=0; j<10; j++){
+      printf("%d ",grid[i][j]);
+    }
+    printf("\n");
+  }
+}
 
 int initCurrPiece(){
   int i;
@@ -92,15 +104,16 @@ int move(struct_piece Piece,int displacement){
   Piece.xorigin+=displacement;
   return 1;
 }
+
 /*
-int updateBoard(){ //doesn't work properly
+  int updateBoard(){ //doesn't work properly
   int i;
   for (i=0;i<4;i++){
-    int x=testPiece.xorigin + testPiece.x[i];
-    int y=testPiece.yorigin + testPiece.y[i];
-    grid[x][y]=1;
+  int x=testPiece.xorigin + testPiece.x[i];
+  int y=testPiece.yorigin + testPiece.y[i];
+  grid[x][y]=1;
   }
-}
+  }
 */
 int resetTestPiece(){
   testPiece.rotation = currPiece.rotation;
@@ -167,6 +180,10 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
 int isDie(){
   return collidesAt(currPiece);
 }
+
+
+
+
 /*
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
@@ -211,52 +228,21 @@ int main( int argc, char* args[] )
       printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
     }
     else{
-        	
-
-        	
-
       //INITIALIZING BOARD AND PIECES (backend)
-      board(grid);
+      board();
       printf("board initialized\n");
-      //printBoard(grid);
       initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-  
       //updateBoard();
-      //printBoard(grid);
+      printBoard();
 
-
-      //Drawing Board
-      SDL_Rect board;
-      int row,col;
-      board.x = P1_DISPLACEMENT_X;
-      board.y = P1_DISPLACEMENT_Y;
-      board.w = BOARD_WIDTH;
-      board.h = BOARD_HEIGHT;
-      SDL_SetRenderDrawColor( renderer, 255, 255,255, 255 );
-      SDL_RenderDrawRect(renderer,&board);
-      SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-      SDL_SetRenderDrawColor( renderer, 255,255,255, 15 );
-      for(row = 1; row <= 23; row++){
-	SDL_RenderDrawLine(renderer,
-			   P1_DISPLACEMENT_X,
-			   row*25+P1_DISPLACEMENT_Y,
-			   BOARD_WIDTH+P1_DISPLACEMENT_X,
-			   row*25 + P1_DISPLACEMENT_Y);
-      }
-      for(col = 1; col <= 10; col++){
-	SDL_RenderDrawLine(renderer,
-			   col*25 + P1_DISPLACEMENT_X,
-			   P1_DISPLACEMENT_Y,
-			   col*25 + P1_DISPLACEMENT_X,
-			   BOARD_HEIGHT + P1_DISPLACEMENT_Y);
-      }
-      SDL_RenderPresent(renderer);
+      drawBoard(renderer,1);
 
       //reset color blending
       SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
-              
+
+      colorBoard(renderer,grid,1);
       int close_requested = 0;
 
       while(!close_requested){
@@ -282,7 +268,7 @@ int main( int argc, char* args[] )
 	      if (try(4)) dropDown(currPiece);
 	    }
 	    //updateBoard();
-	    //printBoard(grid);
+	    //printBoard();
 	  }
 	}
 	/*
@@ -295,21 +281,21 @@ int main( int argc, char* args[] )
 	  }
 	*/
 	/*
-	int i,j;
-	SDL_Rect currentRect = {.w = 25,.h=25};
-	for(i=0; i<26; i++){
+	  int i,j;
+	  SDL_Rect currentRect = {.w = 25,.h=25};
+	  for(i=0; i<26; i++){
 	  for(j=0; j<10; j++){
-	    currentRect.x = P1_DISPLACEMENT_Y + i*25;
-	    currentRect.y = P1_DISPLACEMENT_X + j*25;
-	    if (grid[j][i]){
-	      SDL_SetRenderDrawColor(renderer,255,0,0,0);
-	    }
-	    else{
-	      SDL_SetRenderDrawColor(renderer,0,0,0,0); //black
-	    }
-	    SDL_RenderFillRect(renderer,&board);
+	  currentRect.x = P1_DISPLACEMENT_Y + i*25;
+	  currentRect.y = P1_DISPLACEMENT_X + j*25;
+	  if (grid[j][i]){
+	  SDL_SetRenderDrawColor(renderer,255,0,0,0);
 	  }
-	} 
+	  else{
+	  SDL_SetRenderDrawColor(renderer,0,0,0,0); //black
+	  }
+	  SDL_RenderFillRect(renderer,&board);
+	  }
+	  } 
 	*/
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second
@@ -320,6 +306,7 @@ int main( int argc, char* args[] )
   }
   SDL_DestroyWindow(window);
   SDL_Quit();
+  free(grid);
   return 0;
     
 }
