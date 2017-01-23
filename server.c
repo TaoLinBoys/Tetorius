@@ -6,7 +6,7 @@
 
 #include "networking.h"
 
-void process( char * s );
+void runGame( char * s , int sd );
 void sub_server( int sd );
 
 int coopPlayers = 0;
@@ -46,14 +46,14 @@ void sub_server( int sd ) {
   while (read( sd, buffer, sizeof(buffer) )) {
 
     printf("[SERVER %d] received: %s\n", getpid(), buffer );
-    runGame( buffer );
+    runGame( buffer , sd);
     write( sd, buffer, sizeof(buffer));    
   }
   
 }
 
 
-void runGame( char * s ) {
+void runGame( char * s , int sd ) {
   if(strcmp(s, "coop") == 0){
     if(coopPlayers == 0){
       coopPlayers++;

@@ -26,7 +26,7 @@ int main( int argc, char *argv[] ) {
   char buffer[MESSAGE_BUFFER_SIZE];
   
   while (1) {
-    printf("pick gamemode: [single/coop]");
+    printf("pick gamemode: [single/coop] \n");
     fgets( buffer, sizeof(buffer), stdin );
     char *p = strchr(buffer, '\n');
     *p = 0;
@@ -36,7 +36,7 @@ int main( int argc, char *argv[] ) {
     
     if(strcmp(buffer, "single") == 0){
       //launch game
-      system("tetris");
+      system("./tetris");
     }else if(strcmp(buffer, coopMsg1) == 0){
       printf("%s\n", buffer);
       write( sd, "coop", sizeof("coop") );
@@ -48,6 +48,7 @@ int main( int argc, char *argv[] ) {
       sleep(5000);
       write( sd, "coop", sizeof("coop") );
     }
-  
-  return 0;
+    return 0;
+  }
 }
+
