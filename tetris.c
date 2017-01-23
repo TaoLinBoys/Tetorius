@@ -105,12 +105,20 @@ int move(struct_piece Piece,int displacement){
   return 1;
 }
 
-
+int removeFromBoard(){
+  int i;
+  for (i=0;i<4;i++){
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    grid[x][y]=0;
+  }
+}
 int updateBoard(){
   int i;
   for (i=0;i<4;i++){
     int x=currPiece.xorigin + currPiece.x[i];
     int y=currPiece.yorigin + currPiece.y[i];
+    printf("x:%d\ny:%d\n",x,y);
     grid[x][y]=currPiece.type;
   }
 }
@@ -236,6 +244,7 @@ int main( int argc, char* args[] )
       board();
       printf("board initialized\n");
       initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
+      printf("I_BLOCK.xorigin=%d\n",I_BLOCK.xorigin);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
       updateBoard();
@@ -257,19 +266,40 @@ int main( int argc, char* args[] )
 	  case SDL_KEYDOWN:
 	    switch(event.key.keysym.scancode){
 	    case SDL_SCANCODE_UP:
-	      if (try(0))rotate(currPiece,1);
+	      if (try(0)){
+		rotate(currPiece,1);
+		removeFromBoard();
+		updateBoard();
+		printBoard();
+	      }
 	      break;
 	    case SDL_SCANCODE_RCTRL:
-	      if (try(1)) rotate(currPiece,-1);
+	      if (try(1)){
+		rotate(currPiece,-1);
+		removeFromBoard();
+		updateBoard();
+	      }
 	      break;
 	    case SDL_SCANCODE_LEFT:
-	      if (try(2)) move(currPiece,-1);
+	      if (try(2)){
+		move(currPiece,-1);
+		removeFromBoard();
+		updateBoard();
+	      }
 	      break;
 	    case SDL_SCANCODE_RIGHT:
-	      if (try(3)) move(currPiece,1);
+	      if (try(3)){
+		move(currPiece,1);
+		removeFromBoard();
+		updateBoard();
+	      }
 	      break;
 	    case SDL_SCANCODE_DOWN:
-	      if (try(4)) dropDown(currPiece);
+	      if (try(4)){
+		dropDown(currPiece);
+		removeFromBoard();
+		updateBoard();
+	      }
 	      break;
 	    }
 	  
