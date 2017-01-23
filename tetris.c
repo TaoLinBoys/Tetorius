@@ -91,13 +91,15 @@ int nextPiece(){
   printf("curr= %d\n",curr);
 }
 
-int collidesAt(struct_piece Piece){
+int collidesAt(){
   int i;
+  removeFromBoard();
   for(i=0;i<4;i++){
-    int x = Piece.x[i] + Piece.xorigin;
-    int y = Piece.y[i] + Piece.yorigin;
+    int x = testPiece.x[i] + testPiece.xorigin;
+    int y = testPiece.y[i] + testPiece.yorigin;
     if(grid[x][y]) return 1;
   }
+  updateBoard();
   //printf("--doesn't collide\n");
   return 0;
 }
@@ -129,9 +131,9 @@ struct_piece rotate(struct_piece Piece,int i){
 int isLowest(struct_piece Piece){
   int i,y;
   for(i=0;i<4;i++){
-    y = Piece.y[i]-2 + Piece.yorigin;
+    y = Piece.y[i] + Piece.yorigin;
     printf("piece[y]: %d \n",y);
-    if (y+1>20) return 1;
+    if (y+1>21) return 1;
   }
   return 0;
 }
@@ -189,7 +191,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     removeFromBoard();
     printBoard();
     printf("just removed from board\n");
-    valid = !(collidesAt(testPiece));
+    valid = !(collidesAt());
     printf("valid: %d \n",valid);
     updateBoard();
     resetTestPiece();
@@ -198,7 +200,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
  
   case 1:
     rotate(testPiece,-1);
-    valid = !(collidesAt(testPiece));
+    valid = !(collidesAt());
     resetTestPiece();
     if (valid) {
       return 1;
@@ -207,14 +209,14 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   
   case 2:
     move(testPiece,-1);
-    int valid = !(collidesAt(testPiece));
+    int valid = !(collidesAt());
     resetTestPiece();
     if (valid) return 1;
     else{return 0;}
 
   case 3:
     move(testPiece,1);
-    valid = !(collidesAt(testPiece));
+    valid = !(collidesAt());
     resetTestPiece();
     if (valid) return 1;
     else{return 0;}
@@ -364,7 +366,6 @@ int main( int argc, char* args[] )
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second
 	SDL_Delay(1000/30);
-	
       }
     }
   }
