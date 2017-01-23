@@ -4,6 +4,9 @@
 
 #define SDL_MAIN_HANDLED
 
+//initial grid
+int **grid;
+
 //set window size
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 768;
@@ -18,6 +21,7 @@ const int P1_DISPLACEMENT_Y = 50;
 const int P2_DISPLACEMENT_X = 300;
 const int P2_DISPLACEMENT_Y = 50;
 
+//pieces
 struct_piece I_BLOCK;
 struct_piece J_BLOCK;
 struct_piece L_BLOCK;
@@ -27,11 +31,10 @@ struct_piece T_BLOCK;
 struct_piece Z_BLOCK;
 
 int curr;
-
 struct_piece currPiece;
 struct_piece testPiece; //testing for collisions
+
 int pieceQueue[7];
-int **grid;
 
 
 int initCurrPiece(){
@@ -89,7 +92,7 @@ int move(struct_piece Piece,int displacement){
   Piece.xorigin+=displacement;
   return 1;
 }
-
+/*
 int updateBoard(){ //doesn't work properly
   int i;
   for (i=0;i<4;i++){
@@ -98,7 +101,7 @@ int updateBoard(){ //doesn't work properly
     grid[x][y]=1;
   }
 }
-
+*/
 int resetTestPiece(){
   testPiece.rotation = currPiece.rotation;
   testPiece.xorigin = currPiece.xorigin;
@@ -208,26 +211,8 @@ int main( int argc, char* args[] )
       printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
     }
     else{
-      /*
-      //Get window surface
-      screenSurface = SDL_GetWindowSurface( window );
-
-      //Fill the surface white
-      SDL_FillRect(screenSurface,
-      NULL,
-      SDL_MapRGB(screenSurface->format, 0, 0, 0));
         	
-      SDL_RenderClear( renderer );
-      */
 
-      //need to fix to match the size of the sdl window?? i think
-      //background
-        	
-      int row;
-      for(row = 0; row <= 24; row++){
-	SDL_RenderDrawLine(renderer,P1_DISPLACEMENT_X,row*25,BOARD_WIDTH, row*20);
-	SDL_RenderPresent(renderer);
-      }
         	
 
       //INITIALIZING BOARD AND PIECES (backend)
@@ -238,23 +223,39 @@ int main( int argc, char* args[] )
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
   
-      updateBoard();
+      //updateBoard();
       //printBoard(grid);
 
 
       //Drawing Board
       SDL_Rect board;
+      int row,col;
       board.x = P1_DISPLACEMENT_X;
       board.y = P1_DISPLACEMENT_Y;
       board.w = BOARD_WIDTH;
       board.h = BOARD_HEIGHT;
-      SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
+      SDL_SetRenderDrawColor( renderer, 255, 255,255, 255 );
       SDL_RenderDrawRect(renderer,&board);
+      SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+      SDL_SetRenderDrawColor( renderer, 255,255,255, 15 );
+      for(row = 1; row <= 23; row++){
+	SDL_RenderDrawLine(renderer,
+			   P1_DISPLACEMENT_X,
+			   row*25+P1_DISPLACEMENT_Y,
+			   BOARD_WIDTH+P1_DISPLACEMENT_X,
+			   row*25 + P1_DISPLACEMENT_Y);
+      }
+      for(col = 1; col <= 10; col++){
+	SDL_RenderDrawLine(renderer,
+			   col*25 + P1_DISPLACEMENT_X,
+			   P1_DISPLACEMENT_Y,
+			   col*25 + P1_DISPLACEMENT_X,
+			   BOARD_HEIGHT + P1_DISPLACEMENT_Y);
+      }
       SDL_RenderPresent(renderer);
-        	
-      /*
-	SDL_RenderFillRect(renderer,&block3);
-      */
+
+      //reset color blending
+      SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
               
       int close_requested = 0;
 
@@ -280,7 +281,7 @@ int main( int argc, char* args[] )
 	    case SDL_SCANCODE_DOWN:
 	      if (try(4)) dropDown(currPiece);
 	    }
-	    updateBoard();
+	    //updateBoard();
 	    //printBoard(grid);
 	  }
 	}
@@ -311,7 +312,6 @@ int main( int argc, char* args[] )
 	} 
 	*/
 	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
 	//wait 1/30th of a second
 	SDL_Delay(1000/30);
           
