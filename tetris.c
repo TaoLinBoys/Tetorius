@@ -14,13 +14,27 @@ const int SCREEN_HEIGHT = 768;
 
 
 //pieces
-struct_piece I_BLOCK;
-struct_piece J_BLOCK;
-struct_piece L_BLOCK;
-struct_piece O_BLOCK;
-struct_piece S_BLOCK;
-struct_piece T_BLOCK;
-struct_piece Z_BLOCK;
+struct_piece I_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece J_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece L_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece O_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece S_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece T_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
+struct_piece Z_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
+			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
 
 int curr;
 struct_piece currPiece;
@@ -33,9 +47,9 @@ int P2_SCORE;
 int board(){
   int i,j;
   grid=(int**) malloc(sizeof(int*)*220);
-  for(i=0; i<22; i++){
+  for(i=0; i<10; i++){
     grid[i]=(int*) malloc(sizeof(int)*22);
-    for(j=0; j<10; j++){
+    for(j=0; j<22; j++){
       grid[i][j]=0;
     }
   }
@@ -44,9 +58,9 @@ int board(){
 //for debugging
 int printBoard(){
   int i,j;
-  for(i = 0; i<22; i++){
+  for(i=0; i<22; i++){
     for(j=0; j<10; j++){
-      printf("%d ",grid[i][j]);
+      printf("%d ",grid[j][i]);
     }
     printf("\n");
   }
@@ -58,13 +72,13 @@ int initCurrPiece(){
   shuffle(pieceQueue);
   curr = 0;
   switch (pieceQueue[curr]){
-  case 0: currPiece = *I_BLOCK;
-  case 1: currPiece = J_BLOCK;
-  case 2: currPiece = L_BLOCK;
-  case 3: currPiece = O_BLOCK;
-  case 4: currPiece = S_BLOCK;
-  case 5: currPiece = T_BLOCK;
-  case 6: currPiece = Z_BLOCK;
+  case 0: currPiece = I_BLOCK; break;
+  case 1: currPiece = J_BLOCK; break;
+  case 2: currPiece = L_BLOCK; break; 
+  case 3: currPiece = O_BLOCK; break;
+  case 4: currPiece = S_BLOCK; break; 
+  case 5: currPiece = T_BLOCK; break;
+  case 6: currPiece = Z_BLOCK; break;
   }
 }
    
@@ -121,12 +135,13 @@ int updateBoard(){
   for (i=0;i<4;i++){
     int x=currPiece.xorigin + currPiece.x[i];
     int y=currPiece.yorigin + currPiece.y[i];
-    printf("x:%d\ny:%d\n",x,y);
+    printf("x[%d]:%d\ny[%d]:%d\n",i,x,i,y);
     grid[x][y]=currPiece.type;
   }
 }
 
 int resetTestPiece(){
+  //testPiece = currPiece;
   testPiece.type = currPiece.type;
   testPiece.xorigin = currPiece.xorigin;
   testPiece.yorigin = currPiece.yorigin;
@@ -144,7 +159,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   int valid;
   switch(action){
   case 0:
-    printf("up pressed\n");
     rotate(testPiece,1);
     valid = !(collidesAt(testPiece));
     resetTestPiece();
@@ -152,7 +166,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
  
   case 1:
-    printf("rctrl pressed\n");
     rotate(testPiece,-1);
     valid = !(collidesAt(testPiece));
     resetTestPiece();
@@ -162,7 +175,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
   
   case 2:
-    printf("left pressed\n");
     move(testPiece,-1);
     int valid = !(collidesAt(testPiece));
     resetTestPiece();
@@ -170,7 +182,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
 
   case 3:
-    printf("right pressed\n");
     move(testPiece,1);
     valid = !(collidesAt(testPiece));
     resetTestPiece();
@@ -178,7 +189,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
 
   case 4:
-    printf("down pressed\n");
     dropDown(testPiece);
     valid = !(collidesAt(testPiece));
     resetTestPiece();
@@ -191,10 +201,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
 int isDie(){
   return collidesAt(currPiece);
 }
-
-
-
-
 
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
@@ -223,8 +229,6 @@ int clearRows(){
 return 1;
 }
   /*
-SDL_MOUSEBUTTONUP
-
 //TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
 Uint32 delay = (level*1.2) * 1000
 SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
@@ -263,7 +267,7 @@ int main( int argc, char* args[] )
       //INITIALIZING BOARD AND PIECES (backend)
       board();
       printf("board initialized\n");
-      initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
+      //initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       printf("I_BLOCK.xorigin=%d\n",I_BLOCK.xorigin);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
