@@ -6,7 +6,7 @@
 #include <time.h>
 
 typedef struct piece{
-  int rotation;
+  int type;
   int x[4];
   int y[4];
   int xorigin;

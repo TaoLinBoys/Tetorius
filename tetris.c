@@ -106,17 +106,17 @@ int move(struct_piece Piece,int displacement){
 }
 
 
-int updateBoardWith(struct_piece piece){
+int updateBoard(){
   int i;
   for (i=0;i<4;i++){
-    int x=piece.xorigin + piece.x[i];
-    int y=piece.yorigin + piece.y[i];
-    grid[x][y]=1;
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    grid[x][y]=currPiece.type;
   }
 }
 
 int resetTestPiece(){
-  testPiece.rotation = currPiece.rotation;
+  testPiece.type = currPiece.type;
   testPiece.xorigin = currPiece.xorigin;
   testPiece.yorigin = currPiece.yorigin;
   int i;
@@ -238,7 +238,7 @@ int main( int argc, char* args[] )
       initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-      updateBoardWith(currPiece);
+      updateBoard();
       drawBoard(renderer,1);
 
       //reset color blending
