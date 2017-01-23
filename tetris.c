@@ -2,6 +2,7 @@
 #include "board.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define SDL_MAIN_HANDLED
 
@@ -215,7 +216,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
 
   case 3:
     move(testPiece,1);
-        printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
+    printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     valid = !(collidesAt());
     resetTestPiece();
     if (valid) return 1;
@@ -307,8 +308,14 @@ int main( int argc, char* args[] )
       SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
       int close_requested = 0;
-
+      clock_t counter = clock();
       while(!close_requested){
+	if (clock() - counter > 1000){
+	    removeFromBoard();
+	    currPiece = dropDown(currPiece);
+	    updateBoard();
+	    counter = clock();
+	}
 	//process events
 	SDL_Event event;
 	while (SDL_PollEvent(&event)){
