@@ -9,7 +9,8 @@
 void runGame( char * s , int sd );
 void sub_server( int sd );
 
-int coopPlayers = 0;
+int coop = 0;
+int p1, p2; //sock desc of player 1 and 2
 char coopMsg1[] = "WAITING FOR SECOND PLAYER";
 char coopMsg2[] = "STARTING GAME";
 char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
@@ -17,9 +18,9 @@ char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
 int main() {
 
   int sd, connection;
-
+  
   sd = server_setup();
-    
+  printf("[server] WAITING FOR CONNECTION... \n");  
   while (1) {
 
     connection = server_connect( sd );
@@ -46,8 +47,8 @@ void sub_server( int sd ) {
   while (read( sd, buffer, sizeof(buffer) )) {
 
     printf("[SERVER %d] received: %s\n", getpid(), buffer );
-    runGame( buffer , sd);
-    write( sd, buffer, sizeof(buffer));    
+    runGame( buffer , sd );
+    //write( sd, buffer, sizeof(buffer));    
   }
   
 }
@@ -55,16 +56,13 @@ void sub_server( int sd ) {
 
 void runGame( char * s , int sd ) {
   if(strcmp(s, "coop") == 0){
-    if(coopPlayers == 0){
-      coopPlayers++;
+    //printf("%d\n", coop);
+    if(coop == 0){
+      coop++;
+      //printf("%d\n", coop);
+      p1 = sd;
+      //s = coopMsg1;
       write( sd, coopMsg1, sizeof(coopMsg1));
-    }
-    if(coopPlayers == 1){
-      coopPlayers++;
-      write( sd, coopMsg2, sizeof(coopMsg2));
-    }
-    if(coopPlayers == 2){
-      write( sd, coopMsg3, sizeof(coopMsg3));
     }
   }
 }

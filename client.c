@@ -35,20 +35,17 @@ int main( int argc, char *argv[] ) {
     read( sd, buffer, sizeof(buffer) );
     
     if(strcmp(buffer, "single") == 0){
-      //launch game
-      system("./tetris");
-    }else if(strcmp(buffer, coopMsg1) == 0){
-      printf("%s\n", buffer);
-      write( sd, "coop", sizeof("coop") );
-    }else if(strcmp(buffer, coopMsg2) == 0){
-      printf("%s\n", buffer);
-      system("tetris"); //change this
-    }else if(strcmp(buffer, coopMsg3) == 0){
-      printf("%s\n", buffer);
-      sleep(5000);
-      write( sd, "coop", sizeof("coop") );
+      int temp = fork();
+      if( temp == 0 ){
+	system("./tetris");
+      }
     }
-    return 0;
+    else if(strcmp(buffer, coopMsg1) == 0){
+      printf("%s\n", buffer);
+      write
+    }
   }
+
+  return 0;
 }
 
