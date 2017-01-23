@@ -22,15 +22,20 @@ int main( int argc, char *argv[] ) {
   char buffer[MESSAGE_BUFFER_SIZE];
   
   while (1) {
-    printf("enter message: ");
+    printf("pick gamemode: [single/coop]");
     fgets( buffer, sizeof(buffer), stdin );
     char *p = strchr(buffer, '\n');
     *p = 0;
   
     write( sd, buffer, sizeof(buffer) );
     read( sd, buffer, sizeof(buffer) );
-    printf( "received: %s\n", buffer );
-  }
+    
+    if(strcmp(buffer, "single") == 0){
+      //launch game
+      system("tetris");
+    }else if(strcmp(buffer, "coop") == 0){
+      
+    }
   
   return 0;
 }

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "networking.h"
 
@@ -40,15 +41,16 @@ void sub_server( int sd ) {
   while (read( sd, buffer, sizeof(buffer) )) {
 
     printf("[SERVER %d] received: %s\n", getpid(), buffer );
-    process( buffer );
+    runGame( buffer );
     write( sd, buffer, sizeof(buffer));    
   }
   
 }
-void process( char * s ) {
 
-  while ( *s ) {
-    *s = (*s - 'a' + 13) % 26 + 'a';
-    s++;
+
+void runGame( char * s ) {
+  if(strcmp(s, "coop") == 0){
+    
   }
 }
+
