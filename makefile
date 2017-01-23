@@ -1,16 +1,15 @@
 files = pieces.c board.c tetris.c
-all: tetris networking
+
+all: tetris server client
 
 tetris: $(files) 
 	gcc $(files) $(shell pkg-config --cflags --libs sdl2) -o tetris
 
-networking: server client
-
 server: server.o networking.o
-	gcc server.o networking.o -o server
+	gcc -o server server.o networking.o 
 
 client: client.o networking.o
-	gcc client.o networking.o -o client
+	gcc -o client client.o networking.o 
 
 server.o: server.c networking.h
 	gcc -c server.c
