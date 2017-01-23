@@ -105,16 +105,16 @@ int move(struct_piece Piece,int displacement){
   return 1;
 }
 
-/*
-  int updateBoard(){ //doesn't work properly
+
+int updateBoard(){ //doesn't work properly
   int i;
   for (i=0;i<4;i++){
-  int x=testPiece.xorigin + testPiece.x[i];
-  int y=testPiece.yorigin + testPiece.y[i];
-  grid[x][y]=1;
+    int x=testPiece.xorigin + testPiece.x[i];
+    int y=testPiece.yorigin + testPiece.y[i];
+    grid[x][y]=1;
   }
-  }
-*/
+}
+
 int resetTestPiece(){
   testPiece.rotation = currPiece.rotation;
   testPiece.xorigin = currPiece.xorigin;
@@ -228,21 +228,22 @@ int main( int argc, char* args[] )
       printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
     }
     else{
+      //set background color to black
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_RenderClear(renderer);
+      
       //INITIALIZING BOARD AND PIECES (backend)
       board();
       printf("board initialized\n");
       initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-      //updateBoard();
-      printBoard();
-
+      updateBoard();
       drawBoard(renderer,1);
 
       //reset color blending
       SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
-      colorBoard(renderer,grid,1);
       int close_requested = 0;
 
       while(!close_requested){
@@ -267,10 +268,13 @@ int main( int argc, char* args[] )
 	    case SDL_SCANCODE_DOWN:
 	      if (try(4)) dropDown(currPiece);
 	    }
+	  
+	    colorBoard(renderer,grid,1);
 	    //updateBoard();
 	    //printBoard();
 	  }
 	}
+	
 	/*
 	  if (event.type ==SDL_QUIT){  
 	  close_requested = 1;       
@@ -280,27 +284,11 @@ int main( int argc, char* args[] )
 	  }
 	  }
 	*/
-	/*
-	  int i,j;
-	  SDL_Rect currentRect = {.w = 25,.h=25};
-	  for(i=0; i<26; i++){
-	  for(j=0; j<10; j++){
-	  currentRect.x = P1_DISPLACEMENT_Y + i*25;
-	  currentRect.y = P1_DISPLACEMENT_X + j*25;
-	  if (grid[j][i]){
-	  SDL_SetRenderDrawColor(renderer,255,0,0,0);
-	  }
-	  else{
-	  SDL_SetRenderDrawColor(renderer,0,0,0,0); //black
-	  }
-	  SDL_RenderFillRect(renderer,&board);
-	  }
-	  } 
-	*/
+	
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second
 	SDL_Delay(1000/30);
-          
+	
       }
     }
   }
@@ -310,3 +298,4 @@ int main( int argc, char* args[] )
   return 0;
     
 }
+
