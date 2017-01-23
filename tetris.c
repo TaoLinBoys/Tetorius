@@ -72,13 +72,13 @@ int initCurrPiece(){
   shuffle(pieceQueue);
   curr = 0;
   switch (pieceQueue[curr]){
-  case 0: currPiece = I_BLOCK; break;
-  case 1: currPiece = J_BLOCK; break;
-  case 2: currPiece = L_BLOCK; break; 
-  case 3: currPiece = O_BLOCK; break;
-  case 4: currPiece = S_BLOCK; break; 
-  case 5: currPiece = T_BLOCK; break;
-  case 6: currPiece = Z_BLOCK; break;
+  case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
+  case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
+  case 2: currPiece = L_BLOCK; testPiece = currPiece; break; 
+  case 3: currPiece = O_BLOCK; testPiece = currPiece; break;
+  case 4: currPiece = S_BLOCK; testPiece = currPiece; break; 
+  case 5: currPiece = T_BLOCK; testPiece = currPiece; break;
+  case 6: currPiece = Z_BLOCK; testPiece = currPiece; break;
   }
 }
    
@@ -129,9 +129,9 @@ struct_piece rotate(struct_piece Piece,int i){
 int isLowest(struct_piece Piece){
   int i,y;
   for(i=0;i<4;i++){
-    y = Piece.y[i] + Piece.yorigin;
+    y = Piece.y[i]-2 + Piece.yorigin;
     printf("piece[y]: %d \n",y);
-    if (y+1>22 || collidesAt(testPiece)) return 1;
+    if (y+1>20) return 1;
   }
   return 0;
 }
@@ -318,11 +318,11 @@ int main( int argc, char* args[] )
 	    switch(event.key.keysym.scancode){
 	    case SDL_SCANCODE_UP:
 	      if (try(0)){
-		printf("rotating now\n");
+		//printf("rotating now\n");
 		removeFromBoard();
 		currPiece = rotate(currPiece,1);
 		updateBoard();
-		printBoard();
+		//printBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_RCTRL:
@@ -352,27 +352,14 @@ int main( int argc, char* args[] )
 		currPiece = dropDown(currPiece);
 		updateBoard();
 		printf("printing board after dropdown now--");
-		printBoard();
-		
+		printBoard();	
 	      }
 	      break;
 	    }
-	  
-	    
-	    //updateBoard();
-	    //printBoard();
+	    printBoard();
 	  }
 	}
-	
-	/*
-	  if (event.type ==SDL_QUIT){  
-	  close_requested = 1;       
-	  SDL_DestroyWindow( window );
-	  SDL_Quit();
-	  break;
-	  }
-	  }
-	*/
+	resetTestPiece();
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second

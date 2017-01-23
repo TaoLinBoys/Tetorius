@@ -13,11 +13,6 @@ typedef struct piece{
   int yorigin;
 } struct_piece;
 
-int initPieces(struct_piece I_BLOCK,struct_piece J_BLOCK,
-	       struct_piece L_BLOCK,struct_piece O_BLOCK,
-	       struct_piece S_BLOCK,struct_piece T_BLOCK,
-	       struct_piece Z_BLOCK);
-
 struct_piece rotate(struct_piece Piece,int i);
 struct_piece dropDown(struct_piece Piece);
 
