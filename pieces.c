@@ -87,6 +87,7 @@ int initPieces(struct_piece I_BLOCK,struct_piece J_BLOCK,
   Z_BLOCK.x[2] = 1;
   Z_BLOCK.y[2] = 0;
   Z_BLOCK.x[3] = 2;
+  Z_BLOCK.x[3] = 0;
 }
 
 int rotate(struct_piece Piece,int i){

@@ -106,11 +106,11 @@ int move(struct_piece Piece,int displacement){
 }
 
 
-int updateBoard(){ //doesn't work properly
+int updateBoardWith(struct_piece piece){
   int i;
   for (i=0;i<4;i++){
-    int x=testPiece.xorigin + testPiece.x[i];
-    int y=testPiece.yorigin + testPiece.y[i];
+    int x=piece.xorigin + piece.x[i];
+    int y=piece.yorigin + piece.y[i];
     grid[x][y]=1;
   }
 }
@@ -250,7 +250,6 @@ int main( int argc, char* args[] )
 	//process events
 	SDL_Event event;
 	while (SDL_PollEvent(&event)){
-
 	  switch(event.type){
 	  case SDL_QUIT:
 	    close_requested = 1;
