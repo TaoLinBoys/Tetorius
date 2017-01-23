@@ -238,7 +238,7 @@ int main( int argc, char* args[] )
       initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
-      updateBoardWith(currPiece);
+      updateBoard();
       drawBoard(renderer,1);
 
       //reset color blending
@@ -303,3 +303,4 @@ int main( int argc, char* args[] )
     
 }
 
+i wont t
