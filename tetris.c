@@ -96,7 +96,7 @@ int collidesAt(){
   //printBoard();
   removeFromBoard();
   for(i=0;i<4;i++){
-    int x = testPiece.x[i] + testPiece.xorigin + 1;
+    int x = testPiece.x[i] + testPiece.xorigin;
     printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
     if(x < 0 || x > 9 || y < 0 || y > 22) return 1;
@@ -205,8 +205,9 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
   
   case 2:
-    
     move(testPiece,-1);
+    printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
+    printf("valid: %d\n",valid);
     int valid = !(collidesAt());
     resetTestPiece();
     if (valid) return 1;
@@ -214,6 +215,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
 
   case 3:
     move(testPiece,1);
+        printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     valid = !(collidesAt());
     resetTestPiece();
     if (valid) return 1;
