@@ -90,28 +90,7 @@ int initPieces(struct_piece I_BLOCK,struct_piece J_BLOCK,
   Z_BLOCK.x[3] = 0;
 }
 
-int rotate(struct_piece Piece,int i){
-  
-  //if O_BLOCK(square) don't rotate
-  int j; 
-  if (i>0){  //clockwise rotation
-    for (j=0; j<4;j++){
-      int newX = Piece.y[j];
-      int newY = Piece.x[j] * (-1);
-      Piece.x[j] = newX;
-      Piece.y[j] = newY;
-    }
-  }
-  if (i<0){  //counterclockwise rotation
-    for (j=0; j<4;j++){
-      int newX = Piece.y[j] * (-1);
-      int newY = Piece.x[j];
-      Piece.x[j] = newX;
-      Piece.y[j] = newY;
-    }
-  }
-  return 1;
-}
+
 int dropDown(struct_piece Piece){
   int i;
   int y;
