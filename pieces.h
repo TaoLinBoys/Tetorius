@@ -19,7 +19,7 @@ int initPieces(struct_piece I_BLOCK,struct_piece J_BLOCK,
 	       struct_piece Z_BLOCK);
 
 struct_piece rotate(struct_piece Piece,int i);
-int dropDown(struct_piece Piece);
+struct_piece dropDown(struct_piece Piece);
 
 //helpers
 int shuffle(int arr[]);

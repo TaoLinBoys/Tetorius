@@ -127,11 +127,13 @@ struct_piece rotate(struct_piece Piece,int i){
   return Piece;
 }
 int isLowest(struct_piece Piece){
-  if (dropDown(testPiece)){
-    if (collidesAt(testPiece)){return 1;}//does collides when testpiece is dropped
-    else{return 0;}      //test piece can drop without colliding
+  int i,y;
+  for(i=0;i<4;i++){
+    y = Piece.y[i] + Piece.yorigin;
+    printf("piece[y]: %d \n",y);
+    if (y+1>22 || collidesAt(testPiece)) return 1;
   }
-  else{return 1;}            //cant drop down bc at bottom of board
+  return 0;
 }
 
 int move(struct_piece Piece,int displacement){
@@ -218,13 +220,9 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
 
   case 4:
-    dropDown(testPiece);
-    valid = !(collidesAt(testPiece));
-    resetTestPiece();
-    if (valid) return 1;
-    else{return 0;}   
+    if (isLowest(testPiece)) return 0;
+    else{ return 1;}
   }
-
 }
 
 int isDie(){
@@ -351,13 +349,16 @@ int main( int argc, char* args[] )
 	    case SDL_SCANCODE_DOWN:
 	      if (try(4)){
 		removeFromBoard();
-		dropDown(currPiece);
+		currPiece = dropDown(currPiece);
 		updateBoard();
+		printf("printing board after dropdown now--");
+		printBoard();
+		
 	      }
 	      break;
 	    }
 	  
-	    colorBoard(renderer,grid,1);
+	    
 	    //updateBoard();
 	    //printBoard();
 	  }
@@ -372,7 +373,7 @@ int main( int argc, char* args[] )
 	  }
 	  }
 	*/
-	
+	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second
 	SDL_Delay(1000/30);

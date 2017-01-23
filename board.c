@@ -61,31 +61,39 @@ void colorBoard(SDL_Renderer* renderer,int** board,int player){
     displacementY = P2_DISPLACEMENT_Y;
   }
   
-  curr.w = 25;
-  curr.h = 25;
+  curr.w = 24;
+  curr.h = 24;
   
   for(i=0; i<10; i++){
     for(j=2; j<22; j++){
       switch(board[i][j]){
       case 0:
-	continue;
+	SDL_SetRenderDrawColor( renderer,   0,   0,   0,   0 ); //black
+	break;
       case 1:
 	SDL_SetRenderDrawColor( renderer,   0, 255, 255, 255 ); //I cyan
+	break;
       case 2:
 	SDL_SetRenderDrawColor( renderer,   0,   0, 255, 255 ); //J blue
+	break;
       case 3:
 	SDL_SetRenderDrawColor( renderer, 255, 165,   0, 255 ); //L orange
+	break;
       case 4:
 	SDL_SetRenderDrawColor( renderer, 255, 255,   0, 255 ); //O yellow
+	break;
       case 5:
 	SDL_SetRenderDrawColor( renderer, 124, 252,   0, 255 ); //S lime
+	break;
       case 6:
-	SDL_SetRenderDrawColor( renderer, 255, 128,   0, 128 ); //T purple
+	SDL_SetRenderDrawColor( renderer, 128,   0, 128, 255 ); //T purple
+	break;
       case 7:
 	SDL_SetRenderDrawColor( renderer, 255,   0,   0, 255 ); //Z red
+	break;
       }
-      curr.x = displacementX + i * 25;
-      curr.y = displacementY + j * 25;
+      curr.x = displacementX + i * 25 + 1;
+      curr.y = displacementY + (j-2) * 25 + 1;
       SDL_RenderFillRect(renderer,&curr);
     }
   }
