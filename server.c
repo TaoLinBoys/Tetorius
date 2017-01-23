@@ -9,6 +9,11 @@
 void process( char * s );
 void sub_server( int sd );
 
+int coopPlayers = 0;
+char coopMsg1[] = "WAITING FOR SECOND PLAYER";
+char coopMsg2[] = "STARTING GAME";
+char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+
 int main() {
 
   int sd, connection;
@@ -50,7 +55,17 @@ void sub_server( int sd ) {
 
 void runGame( char * s ) {
   if(strcmp(s, "coop") == 0){
-    
+    if(coopPlayers == 0){
+      coopPlayers++;
+      write( sd, coopMsg1, sizeof(coopMsg1));
+    }
+    if(coopPlayers == 1){
+      coopPlayers++;
+      write( sd, coopMsg2, sizeof(coopMsg2));
+    }
+    if(coopPlayers == 2){
+      write( sd, coopMsg3, sizeof(coopMsg3));
+    }
   }
 }
 

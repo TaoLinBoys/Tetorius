@@ -5,6 +5,10 @@
 
 #include "networking.h"
 
+char coopMsg1[] = "WAITING FOR SECOND PLAYER";
+char coopMsg2[] = "STARTING GAME";
+char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+
 int main( int argc, char *argv[] ) {
 
   char *host;
@@ -33,8 +37,16 @@ int main( int argc, char *argv[] ) {
     if(strcmp(buffer, "single") == 0){
       //launch game
       system("tetris");
-    }else if(strcmp(buffer, "coop") == 0){
-      
+    }else if(strcmp(buffer, coopMsg1) == 0){
+      printf("%s\n", buffer);
+      write( sd, "coop", sizeof("coop") );
+    }else if(strcmp(buffer, coopMsg2) == 0){
+      printf("%s\n", buffer);
+      system("tetris"); //change this
+    }else if(strcmp(buffer, coopMsg3) == 0){
+      printf("%s\n", buffer);
+      sleep(5000);
+      write( sd, "coop", sizeof("coop") );
     }
   
   return 0;
