@@ -70,3 +70,7 @@ harryL -- 2017-01-22 @19:01
      commented out updateboard functions
      add grid graphics
 
+harryL -- 2017-01-22 @21:50
+     fix printBoard
+     move sdl functions to board.c
+
