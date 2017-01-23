@@ -93,11 +93,14 @@ int nextPiece(){
 
 int collidesAt(){
   int i;
+  //printBoard();
   removeFromBoard();
   for(i=0;i<4;i++){
-    int x = testPiece.x[i] + testPiece.xorigin;
+    int x = testPiece.x[i] + testPiece.xorigin + 1;
+    printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
-    if(grid[x][y] || x < 0 || x > 10 || y < 0 || y > 22) return 1;
+    if(x < 0 || x > 9 || y < 0 || y > 22) return 1;
+    if(grid[x][y]) return 1;
   }
   updateBoard();
   //printf("--doesn't collide\n");
@@ -202,6 +205,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
   
   case 2:
+    
     move(testPiece,-1);
     int valid = !(collidesAt());
     resetTestPiece();
@@ -348,11 +352,11 @@ int main( int argc, char* args[] )
 		currPiece = dropDown(currPiece);
 		updateBoard();
 		printf("printing board after dropdown now--");
-		printBoard();	
+		//printBoard();	
 	      }
 	      break;
 	    }
-	    printBoard();
+	    //printBoard();
 	  }
 	}
 	resetTestPiece();
