@@ -18,7 +18,7 @@ int initPieces(struct_piece I_BLOCK,struct_piece J_BLOCK,
 	       struct_piece S_BLOCK,struct_piece T_BLOCK,
 	       struct_piece Z_BLOCK);
 
-int rotate(struct_piece Piece,int i);
+struct_piece rotate(struct_piece Piece,int i);
 int dropDown(struct_piece Piece);
 
 //helpers

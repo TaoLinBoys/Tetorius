@@ -102,7 +102,30 @@ int collidesAt(struct_piece Piece){
   return 0;
 }
 
-
+struct_piece rotate(struct_piece Piece,int i){
+  
+  //if O_BLOCK(square) don't rotate
+  int j; 
+  if (i>0){  //clockwise rotation
+    for (j=0; j<4;j++){
+      int newX = Piece.y[j];
+      int newY = Piece.x[j] * (-1);
+      Piece.x[j] = newX;
+      Piece.y[j] = newY;
+      printf("-After Rotate- Piece x,y:(%d,%d) \n",Piece.x[j],Piece.y[j]);
+    }
+  }
+  if (i<0){  //counterclockwise rotation
+    for (j=0; j<4;j++){
+      int newX = Piece.y[j] * (-1);
+      int newY = Piece.x[j];
+      Piece.x[j] = newX;
+      Piece.y[j] = newY;
+      printf("Piece.x[j]:%d \n Piece.y[j]:%d \n",Piece.x[j],Piece.y[j]);
+    }
+  }
+  return Piece;
+}
 int isLowest(struct_piece Piece){
   if (dropDown(testPiece)){
     if (collidesAt(testPiece)){return 1;}//does collides when testpiece is dropped
@@ -135,7 +158,7 @@ int updateBoard(){
   for (i=0;i<4;i++){
     int x=currPiece.xorigin + currPiece.x[i];
     int y=currPiece.yorigin + currPiece.y[i];
-    printf("x[%d]:%d\ny[%d]:%d\n",i,x,i,y);
+    printf("(x,y)%d: (%d,%d)\n",i,x,y);
     grid[x][y]=currPiece.type;
   }
 }
@@ -159,8 +182,14 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   int valid;
   switch(action){
   case 0:
+    printf("rotating: in try\n");
     rotate(testPiece,1);
+    removeFromBoard();
+    printBoard();
+    printf("just removed from board\n");
     valid = !(collidesAt(testPiece));
+    printf("valid: %d \n",valid);
+    updateBoard();
     resetTestPiece();
     if (valid)return 1;
     else{return 0;}
@@ -291,37 +320,38 @@ int main( int argc, char* args[] )
 	    switch(event.key.keysym.scancode){
 	    case SDL_SCANCODE_UP:
 	      if (try(0)){
-		rotate(currPiece,1);
+		printf("rotating now\n");
 		removeFromBoard();
+		currPiece = rotate(currPiece,1);
 		updateBoard();
 		printBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_RCTRL:
 	      if (try(1)){
-		rotate(currPiece,-1);
 		removeFromBoard();
+		rotate(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)){
-		move(currPiece,-1);
 		removeFromBoard();
+		move(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_RIGHT:
 	      if (try(3)){
-		move(currPiece,1);
 		removeFromBoard();
+		move(currPiece,1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_DOWN:
 	      if (try(4)){
-		dropDown(currPiece);
 		removeFromBoard();
+		dropDown(currPiece);
 		updateBoard();
 	      }
 	      break;
@@ -356,4 +386,3 @@ int main( int argc, char* args[] )
   return 0;
     
 }
-
