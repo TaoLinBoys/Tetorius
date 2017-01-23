@@ -259,14 +259,19 @@ int main( int argc, char* args[] )
 	    switch(event.key.keysym.scancode){
 	    case SDL_SCANCODE_UP:
 	      if (try(0))rotate(currPiece,1);
+	      break;
 	    case SDL_SCANCODE_RCTRL:
 	      if (try(1)) rotate(currPiece,-1);
+	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)) move(currPiece,-1);
+	      break;
 	    case SDL_SCANCODE_RIGHT:
 	      if (try(3)) move(currPiece,1);
+	      break;
 	    case SDL_SCANCODE_DOWN:
 	      if (try(4)) dropDown(currPiece);
+	      break;
 	    }
 	  
 	    colorBoard(renderer,grid,1);
