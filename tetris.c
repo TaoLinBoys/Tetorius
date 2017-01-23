@@ -1,5 +1,7 @@
 #include "pieces.h"
 #include "board.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #define SDL_MAIN_HANDLED
 
@@ -23,8 +25,9 @@ struct_piece Z_BLOCK;
 int curr;
 struct_piece currPiece;
 struct_piece testPiece; //testing for collisions
-
 int pieceQueue[7];
+int P1_SCORE;
+int P2_SCORE;
 
 //this is our backend board
 int board(){
@@ -55,7 +58,7 @@ int initCurrPiece(){
   shuffle(pieceQueue);
   curr = 0;
   switch (pieceQueue[curr]){
-  case 0: currPiece = I_BLOCK;
+  case 0: currPiece = *I_BLOCK;
   case 1: currPiece = J_BLOCK;
   case 2: currPiece = L_BLOCK;
   case 3: currPiece = O_BLOCK;
@@ -192,17 +195,34 @@ int isDie(){
 
 
 
-/*
+
 //this is prob wrong. i'll fix later
 int deleteRow(int row){
-for (int j = row-1; j > 0; j--) {
-for (int i = 1; i < 11; i++) {
-board[i-1][j+2] = board[i-1][j+1];
+  int i,j;
+  for (j = row-1; j > 2; j--) {
+    for (i = 0; i < 10; i++) {
+      grid[i][j+1] = grid[i][j];
+    }
+  }
 }
-}
+int clearRows(){
+  int gap,j,i;
+  for (j=22;j>2;j--){
+    gap=0;
+    for (i=0;i<10;i++){
+      if(!grid[i][j]){
+	gap=1;
+	break;
+      }
+    }
+    if(!gap){
+      deleteRow(j);
+      j+=1;
+    }
+  }
 return 1;
 }
- 
+  /*
 SDL_MOUSEBUTTONUP
 
 //TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
@@ -219,7 +239,7 @@ int main( int argc, char* args[] )
   SDL_Window* window = NULL;
   SDL_Surface* screenSurface = NULL;
   SDL_Renderer* renderer = NULL;
-  if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER) < 0 ){
+  if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_EVENTS) < 0 ){
     printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
   } 
   else{
