@@ -97,7 +97,7 @@ int collidesAt(){
   for(i=0;i<4;i++){
     int x = testPiece.x[i] + testPiece.xorigin;
     int y = testPiece.y[i] + testPiece.yorigin;
-    if(grid[x][y]) return 1;
+    if(grid[x][y] || x < 0 || x > 10 || y < 0 || y > 22) return 1;
   }
   updateBoard();
   //printf("--doesn't collide\n");
@@ -138,7 +138,7 @@ int isLowest(struct_piece Piece){
   return 0;
 }
 
-int move(struct_piece Piece,int displacement){
+struct_piece move(struct_piece Piece,int displacement){
   int i;
   int x;
   for (i=0;i<4;i++){
@@ -146,7 +146,7 @@ int move(struct_piece Piece,int displacement){
     if (x+displacement<0 || x+displacement>10) return 0;
   }
   Piece.xorigin+=displacement;
-  return 1;
+  return Piece;
 }
 
 int removeFromBoard(){
@@ -186,10 +186,10 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   int valid;
   switch(action){
   case 0:
-    printf("rotating: in try\n");
+    //printf("rotating: in try\n");
     rotate(testPiece,1);
     removeFromBoard();
-    printBoard();
+    //printBoard();
     printf("just removed from board\n");
     valid = !(collidesAt());
     printf("valid: %d \n",valid);
@@ -330,21 +330,21 @@ int main( int argc, char* args[] )
 	    case SDL_SCANCODE_RCTRL:
 	      if (try(1)){
 		removeFromBoard();
-		rotate(currPiece,-1);
+		currPiece = rotate(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)){
 		removeFromBoard();
-		move(currPiece,-1);
+		currPiece = move(currPiece,-1);
 		updateBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_RIGHT:
 	      if (try(3)){
 		removeFromBoard();
-		move(currPiece,1);
+		currPiece = move(currPiece,1);
 		updateBoard();
 	      }
 	      break;
