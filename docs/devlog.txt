@@ -1,6 +1,9 @@
 Devlog
 
 Format: firstL -- YY-MM-DD @HH:mm
+taoL -- 2017-01-13 @00:00
+harryL -- 2017-1-19 @00:00
+michaelW -- 2017-1-21 @00:00
 
 taoL -- 2017-01-05 @00:30
      Added design document
@@ -45,19 +48,23 @@ michaelW -- 2017-01-09 @22:38
      Added tetris blocks as a struct of 4 coordinates (current plan)
      Added constants for SDL window and tetris board positioning
 
-taoL -- 2017-01-13 @00:00
-harryL -- 2017-1-19 @00:00
-michaelW -- 2017-1-21 @00:00
 
 harryL -- 2017-01-20 @15:35
      Duplicated tetris.c to tetris2.c (test file)
      Separated tetris2.c into tetris2.c and pieces.c
      Added pieces.h
      Updated makefile
-
+     
+michaelW -- 2017-01-20
+     worked on key inputs in sdl
+     
 harryL -- 2017-01-21 @15:49
      Implemented changes from tetris2.c to tetris.c
      Updated makefile
+    
+michaelW -- 2017-01-22
+     update backend board
+     check if pieces are at lowest position
 
 harryL -- 2017-01-22 @17:35
      Moved functions to new files (board.c and board.h) for modularization
@@ -73,4 +80,31 @@ harryL -- 2017-01-22 @19:01
 harryL -- 2017-01-22 @21:50
      fix printBoard
      move sdl functions to board.c
+     
+michaelW -- 2017-01-23
+     fixed initializing pieces
+     initialize current piece
+     
+taoL -- 2017-01-24
+     fixed networking
+     prompts for single/coop modes
+     
+michaelW -- 2017-01-24
+     get next piece
+     end game when die
+     fixed collision cases and boundary cases
+     fixed rotate, move
+     hold piece feature
+     
+harryL -- 2017-01-24
+     fixed clearing rows
+     created timer for gravity and locking pieces
+     add score feature
+     fixed SDL drawing board
+     score files, writing to coopscores.txt
+     
+taoL -- 2017-01-24
+     establish network connection
+     display winner
+     single/coop selection
 
