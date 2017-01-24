@@ -65,3 +65,4 @@ Timer works differently on some computers. The gravity in the game may be extrem
 Game may not end when it should. Wait until the natural softdrop occurs.
 
 ##Cool Features:
+Try a T-spin 
