@@ -128,7 +128,7 @@ int collidesAt(){
     int x = testPiece.x[i] + testPiece.xorigin;
     printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
-    if(x < 0 || x > 9 || y < 0 || y > 22) return 1;
+    if(x < 0 || x > 9 || y < 0 || y > 21) return 1;
     if(grid[x][y]) return 1;
   }
   updateBoard();
@@ -213,7 +213,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
   
   case 2:
-    move(testPiece,-1);
+    testPiece = move(testPiece,-1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     printf("!collidesAt(): %d\n",!collidesAt());
     testPiece = currPiece;
@@ -221,7 +221,7 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
 
   case 3:
-    move(testPiece,1);
+    testPiece = move(testPiece,1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     testPiece = currPiece;
     if (!collidesAt()) return 1;
