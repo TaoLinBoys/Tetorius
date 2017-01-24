@@ -302,12 +302,11 @@ int main( int argc, char* args[] )
       clock_t counter = clock();
 
       //playing the game
-      
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
 	//clear rows, updateboard
-	if (currenttime - counter > 40000){
+	if (currenttime - counter > 1000000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
@@ -383,8 +382,7 @@ int main( int argc, char* args[] )
 	testPiece = currPiece;
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
-	//wait 1/30th of a second
-	SDL_Delay(1000/30);
+
       }
     }
   }
