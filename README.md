@@ -15,7 +15,7 @@ SDL2
 
 Follow the prompts asking for either single/coop mode.
 
-Type "make run" in terminal to play singleplayer if connection doesn't work.
+Type "make run" in terminal to play singleplayer if network connection doesn't work.
 
 ##List of files:
 board.c
@@ -68,5 +68,7 @@ Timer works differently on some computers. The gravity in the game may be extrem
 
 Game may not end when it should. Wait until the natural softdrop occurs.
 
+Networking hasn't been tested on school computers, and thus, may be dysfunctional. 
+
 ##Cool Features:
-Try a T-spin 
+Try a T-spin!
