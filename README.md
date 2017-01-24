@@ -15,6 +15,8 @@ SDL2
 
 Follow the prompts asking for either single/coop mode.
 
+Type "make run" in terminal to play singleplayer if connection doesn't work.
+
 ##List of files:
 board.c
 
