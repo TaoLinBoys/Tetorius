@@ -91,6 +91,7 @@ int nextPiece(){
   curr++;
   printf("curr= %d\n",curr);
   updateBoard();
+  printBoard();
   switch (pieceQueue[curr]){
   case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
   case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
@@ -110,8 +111,11 @@ int collidesAt(){
     int x = testPiece.x[i] + testPiece.xorigin;
     printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
-    if(x < 0 || x > 9 || y < 0 || y > 21) return 1;
-    if(grid[x][y]) return 1;
+    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) {
+      printf("out of boundaries\n");
+      updateBoard();
+      return 1;
+    }
   }
   updateBoard();
   //printf("--doesn't collide\n");
@@ -119,7 +123,6 @@ int collidesAt(){
 }
 
 struct_piece rotate(struct_piece Piece,int i){
-  
   //if O_BLOCK(square) don't rotate
   int j; 
   if (i>0){  //clockwise rotation
@@ -214,14 +217,14 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     testPiece = move(testPiece,-1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     printf("!collidesAt(): %d\n",!collidesAt());
-    testPiece = currPiece;
-    if (!collidesAt()) return 1;
-    else{return 0;}
+    if (!(collidesAt())){ return 1;}
+    else{
+      printf("does collide\n");
+      return 0;}
 
   case 3:
     testPiece = move(testPiece,1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
-    testPiece = currPiece;
     if (!collidesAt()) return 1;
     else{return 0;}
 
@@ -313,6 +316,7 @@ int main( int argc, char* args[] )
       int close_requested = 0;
       clock_t counter = clock();
       while(!close_requested){
+	/*
   //clear rows, updateboard
 	if (clock() - counter > 1000){
 	    if (try(4)){
@@ -323,9 +327,8 @@ int main( int argc, char* args[] )
       }
       if(isLowest(currPiece)){
         nextPiece();
-
       }
-    }
+      }*/
 
 	//process events
 	SDL_Event event;
@@ -354,6 +357,7 @@ int main( int argc, char* args[] )
 	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)){
+		printf("going to move left\n");
 		removeFromBoard();
 		currPiece = move(currPiece,-1);
 		updateBoard();
