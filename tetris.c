@@ -163,12 +163,14 @@ struct_piece rotate(struct_piece Piece,int i){
   }
   return Piece;
 }
+		      
 int isLowest(struct_piece Piece){
-  int i,y;
+  int i,x,y;
   for(i=0;i<4;i++){
+    x = Piece.x[i] + Piece.xorigin;
     y = Piece.y[i] + Piece.yorigin;
     //printf("piece[y]: %d \n",y);
-    if (y+1>21) return 1;
+    if (y+1>21 || grid[x][y]) return 1;
   }
   return 0;
 }
@@ -208,8 +210,10 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
     else{return 0;}
 
   case 4:
-    if (isLowest(testPiece)) return 0;
-    else{ return 1;}
+    testPiece = dropDown(testPiece);
+    if(!collidesAt()) return 1;
+    else{return 0;}
+
   }
 }
 
@@ -300,8 +304,8 @@ int main( int argc, char* args[] )
       //playing the game
       
       while(!close_requested){
-	printf("currenttime: %ld\n",currenttime);
-	printf("counter: %ld",counter);
+	//printf("currenttime: %ld\n",currenttime);
+	//printf("counter: %ld",counter);
 	//clear rows, updateboard
 	if (currenttime - counter > 40000){
 	  if (try(4)){
@@ -309,7 +313,7 @@ int main( int argc, char* args[] )
 	    currPiece = dropDown(currPiece);
 	    updateBoard();
 	  }
-	  if(isLowest(currPiece)){
+	  if(!try(4)){
 	    nextPiece();
 
 	  }
@@ -373,7 +377,7 @@ int main( int argc, char* args[] )
 		updateBoard();
 	      }
 	      break;
-	    //printBoard();
+	    }
 	  }
 	}
 	testPiece = currPiece;
@@ -388,5 +392,4 @@ int main( int argc, char* args[] )
   SDL_Quit();
   free(grid);
   return 0;
-    
 }
