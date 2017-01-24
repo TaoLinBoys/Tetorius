@@ -18,22 +18,22 @@ const int SCREEN_HEIGHT = 768;
 struct_piece I_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=2,
 			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=0};
-struct_piece J_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece J_BLOCK = {.type=2, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=-1,
 			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=-1};
-struct_piece L_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece L_BLOCK = {.type=3, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=1,
 			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=-1};
-struct_piece O_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece O_BLOCK = {.type=4, .xorigin=5, .yorigin=2,
 			.x[0]=0, .x[1]=0, .x[2]=1, .x[3]=1,
 			.y[0]=-1, .y[1]=0, .y[2]=-1, .y[3]=0};
-struct_piece S_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece S_BLOCK = {.type=5, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=0, .x[3]=1,
 			.y[0]=0, .y[1]=0, .y[2]=-1, .y[3]=-1};
-struct_piece T_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece T_BLOCK = {.type=6, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=0,
 			.y[0]=0, .y[1]=0, .y[2]=0, .y[3]=-1};
-struct_piece Z_BLOCK = {.type=1, .xorigin=5, .yorigin=2,
+struct_piece Z_BLOCK = {.type=7, .xorigin=5, .yorigin=2,
 			.x[0]=-1, .x[1]=0, .x[2]=1, .x[3]=0,
 			.y[0]=-1, .y[1]=-1, .y[2]=0, .y[3]=0};
 
@@ -43,6 +43,24 @@ struct_piece testPiece; //testing for collisions
 int pieceQueue[7];
 int P1_SCORE;
 int P2_SCORE;
+
+int removeFromBoard(){
+  int i;
+  for (i=0;i<4;i++){
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    grid[x][y]=0;
+  }
+}
+int updateBoard(){
+  int i;
+  for (i=0;i<4;i++){
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    printf("(x,y)%d: (%d,%d)\n",i,x,y);
+    grid[x][y]=currPiece.type;
+  }
+}
 
 //this is our backend board
 int board(){
@@ -160,23 +178,7 @@ struct_piece move(struct_piece Piece,int displacement){
   return Piece;
 }
 
-int removeFromBoard(){
-  int i;
-  for (i=0;i<4;i++){
-    int x=currPiece.xorigin + currPiece.x[i];
-    int y=currPiece.yorigin + currPiece.y[i];
-    grid[x][y]=0;
-  }
-}
-int updateBoard(){
-  int i;
-  for (i=0;i<4;i++){
-    int x=currPiece.xorigin + currPiece.x[i];
-    int y=currPiece.yorigin + currPiece.y[i];
-    printf("(x,y)%d: (%d,%d)\n",i,x,y);
-    grid[x][y]=currPiece.type;
-  }
-}
+
 /*
 int resetTestPiece(){
   //testPiece = currPiece;
