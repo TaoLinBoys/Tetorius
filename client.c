@@ -42,7 +42,7 @@ int main( int argc, char *argv[] ) {
     }
     else if(strcmp(buffer, coopMsg1) == 0){
       printf("%s\n", buffer);
-      write
+      
     }
   }
 
