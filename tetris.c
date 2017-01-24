@@ -170,6 +170,7 @@ int isLowest(struct_piece Piece){
     x = Piece.x[i] + Piece.xorigin;
     y = Piece.y[i] + Piece.yorigin;
     //printf("piece[y]: %d \n",y);
+
     if (y+1>21 || grid[x][y]) return 1;
   }
   return 0;
@@ -286,7 +287,6 @@ int main( int argc, char* args[] )
       //INITIALIZING BOARD AND PIECES (backend)
       board();
       printf("board initialized\n");
-      //initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       printf("I_BLOCK.xorigin=%d\n",I_BLOCK.xorigin);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
@@ -302,12 +302,11 @@ int main( int argc, char* args[] )
       clock_t counter = clock();
       clock_t nextPieceCounter = clock();
       //playing the game
-      
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
 	//clear rows, updateboard
-	if (currenttime - counter > 40000){
+	if (currenttime - counter > 1000000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
@@ -379,8 +378,7 @@ int main( int argc, char* args[] )
 	testPiece = currPiece;
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
-	//wait 1/30th of a second
-	SDL_Delay(1000/30);
+
       }
     }
   }
