@@ -11,8 +11,8 @@
 int **grid;
 
 //set window size
-const int SCREEN_WIDTH = 1024;
-const int SCREEN_HEIGHT = 768;
+const int SCREEN_WIDTH = 500;
+const int SCREEN_HEIGHT = 600;
 
 
 //pieces
@@ -39,8 +39,10 @@ struct_piece Z_BLOCK = {.type=7, .xorigin=5, .yorigin=2,
 			.y[0]=-1, .y[1]=-1, .y[2]=0, .y[3]=0};
 
 int curr;
+int usedHold=0;
 struct_piece currPiece;
 struct_piece testPiece; //testing for collisions
+struct_piece holdPiece;
 int pieceQueue[7];
 int P1_SCORE;
 int P2_SCORE;
@@ -86,11 +88,21 @@ int printBoard(){
   }
 }
 
+int isDie(struct_piece Piece){
+  int i;
+  for(i=0;i<4;i++){
+    int x = Piece.x[i] + Piece.xorigin;
+    int y = Piece.y[i] + Piece.yorigin;
+    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
+  }
+  return 0;
+}
+
 int initCurrPiece(){
   int i;
   for(i=0;i<7;i++) pieceQueue[i] = i;
   shuffle(pieceQueue);
-  curr = 0;
+  curr = 1;
   switch (pieceQueue[curr]){
   case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
   case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
@@ -100,6 +112,15 @@ int initCurrPiece(){
   case 5: currPiece = T_BLOCK; testPiece = currPiece; break;
   case 6: currPiece = Z_BLOCK; testPiece = currPiece; break;
   }
+  switch (pieceQueue[curr-1]){
+  case 0: holdPiece = I_BLOCK; break;
+  case 1: holdPiece = J_BLOCK; break;
+  case 2: holdPiece = L_BLOCK; break;
+  case 3: holdPiece = O_BLOCK; break;
+  case 4: holdPiece = S_BLOCK; break;
+  case 5: holdPiece = T_BLOCK; break;
+  case 6: holdPiece = Z_BLOCK; break;
+  }
 }
    
 int nextPiece(){
@@ -108,6 +129,7 @@ int nextPiece(){
     curr = 0;
   }
   curr+=1;
+  usedHold=0;
   printf("curr= %d\n",curr);
   updateBoard();
   switch (pieceQueue[curr]){
@@ -122,16 +144,15 @@ int nextPiece(){
   return 1;
 }
 
-int isDie(struct_piece Piece){
-  int i;
-  for(i=0;i<4;i++){
-    int x = Piece.x[i] + Piece.xorigin;
-    int y = Piece.y[i] + Piece.yorigin;
-    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
-  }
-  return 0;
+int hold(){
+  struct_piece temp;
+  removeFromBoard();
+  temp = holdPiece;
+  holdPiece = currPiece;
+  currPiece = temp;
+  updateBoard();
 }
-  
+
 int collidesAt(){
   int i;
   //printBoard();
@@ -384,13 +405,20 @@ int main( int argc, char* args[] )
 	      }
 	      updateBoard();
 	      break;
+	    case SDL_SCANCODE_RSHIFT:
+	      if (!usedHold){
+		hold();
+		usedHold=1;
+		updateBoard();
+		colorHold(renderer,holdPiece);
+	      }
+	      break;
 	    }
 	  }
 	}
 	testPiece = currPiece;
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
-
       }
     }
   }

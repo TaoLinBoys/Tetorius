@@ -1,4 +1,6 @@
 #include "board.h"
+#include "pieces.h"
+
 //set board size
 int BOARD_WIDTH = 250;
 int BOARD_HEIGHT = 500;
@@ -11,6 +13,7 @@ int P2_DISPLACEMENT_Y = 50;
 
 void drawBoard(SDL_Renderer* renderer,int player){
   SDL_Rect board;
+  SDL_Rect holdBox;
   int displacementX,displacementY;
   int row,col;
   
@@ -26,9 +29,14 @@ void drawBoard(SDL_Renderer* renderer,int player){
   board.y = displacementY;
   board.w = BOARD_WIDTH;
   board.h = BOARD_HEIGHT;
+  holdBox.x=displacementX+25*10;
+  holdBox.y=displacementY;
+  holdBox.w=25*5;
+  holdBox.h=25*5;
       
   SDL_SetRenderDrawColor(renderer, 255, 255,255, 255 );
   SDL_RenderDrawRect(renderer,&board);
+  SDL_RenderDrawRect(renderer,&holdBox);
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
   SDL_SetRenderDrawColor(renderer, 255,255,255, 15 );
       
@@ -98,5 +106,37 @@ void colorBoard(SDL_Renderer* renderer,int** board,int player){
       curr.y = displacementY + (j-2) * 25 + 1;
       SDL_RenderFillRect(renderer,&curr);
     }
+  }
+}
+
+void colorHold(SDL_Renderer* renderer, struct_piece Piece){
+  int i,j;
+  int displacementX=P1_DISPLACEMENT_X+250;
+  int displacementY=P1_DISPLACEMENT_Y;
+  SDL_Rect curr;
+  curr.w=23;
+  curr.h=23;
+  SDL_SetRenderDrawColor(renderer,0,0,0,0);
+  for (i=0;i<5;i++){
+    for(j=0;j<5;j++){
+      curr.x = displacementX + i * 25 + 1;
+      curr.y = displacementY + j * 25 + 1;
+      SDL_RenderFillRect(renderer,&curr);
+    }
+  }
+  printf("Piece.type:%d\n",Piece.type);
+  switch(Piece.type){
+  case 1: SDL_SetRenderDrawColor(renderer,   0, 255, 255, 255 );break; //I cyan
+  case 2: SDL_SetRenderDrawColor(renderer,   0,   0, 255, 255 );break; //
+  case 3: SDL_SetRenderDrawColor(renderer, 255, 165,   0, 255 );break; //
+  case 4: SDL_SetRenderDrawColor(renderer, 255, 255,   0, 255 );break; //
+  case 5: SDL_SetRenderDrawColor(renderer, 124, 252,   0, 255 );break; //
+  case 6: SDL_SetRenderDrawColor(renderer, 128,   0, 128, 255 );break; //
+  case 7: SDL_SetRenderDrawColor(renderer, 255,   0,   0, 255 );break; //
+  }
+  for(i=0;i<4;i++){
+    curr.x = displacementX + (Piece.x[i] + 2) * 25 + 1;
+    curr.y = displacementY + (Piece.y[i] + 2) * 25 + 1;  
+    SDL_RenderFillRect(renderer,&curr);
   }
 }
