@@ -293,30 +293,29 @@ int main( int argc, char* args[] )
       SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
       int close_requested = 0;
+      
+      clock_t currenttime = clock();
       clock_t counter = clock();
-
 
       //playing the game
       
       while(!close_requested){
-	/*
-	printf("clock: %ld\n",clock());
+	printf("currenttime: %ld\n",currenttime);
 	printf("counter: %ld",counter);
 	//clear rows, updateboard
-	if (clock() - counter > 1000){
+	if (currenttime - counter > 40000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
 	    updateBoard();
-	    counter = clock();
 	  }
 	  if(isLowest(currPiece)){
 	    nextPiece();
 
 	  }
+	  counter = clock();
 	}
-	*/
-
+	currenttime = clock();
 
 	//process events
 	SDL_Event event;
