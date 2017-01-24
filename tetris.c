@@ -2,8 +2,12 @@
 #include "board.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <time.h>
 #include <math.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define SDL_MAIN_HANDLED
 
@@ -303,7 +307,7 @@ int main( int argc, char* args[] )
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
       updateBoard();
       drawBoard(renderer,1);
-
+      
       //reset color blending
       SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 
@@ -420,6 +424,33 @@ int main( int argc, char* args[] )
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
       }
+
+      //write score to scoreboard
+      umask(0);
+      int scoreboardfd = open("coopscore.txt",O_CREAT | O_WRONLY, 0666);
+      
+      if (scoreboardfd == -1){
+	printf("error, couldnt open with read\n");
+      }
+      /*
+      int filesize = lseek(scoreboardfd,0,SEEK_END);
+      char scores[filesize];
+      read(scoreboardfd,scores,filesize);
+      close(scoreboardfd);
+      
+      scoreboardfd = open("coopscore.txt",O_WRITE, 0666);
+      if (scoreboardfd == -1){
+	printf("error, couldnt open with append\n");
+      }
+      */
+      char score[10];
+      sprintf(score,"%d",P1_SCORE);
+      printf("%d\n",scoreboardfd);
+      printf("%s\n",score);
+      printf("%d\n",strlen(score));
+      write(scoreboardfd,score,strlen(score));
+      close(scoreboardfd);
+      
     }
   }
   SDL_DestroyWindow(window);
