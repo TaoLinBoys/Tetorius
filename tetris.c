@@ -127,10 +127,10 @@ int collidesAt(){
   removeFromBoard();
   for(i=0;i<4;i++){
     int x = testPiece.x[i] + testPiece.xorigin;
-    printf("--collidesAt x: %d \n" ,x);
+    //printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
     if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) {
-      printf("out of boundaries\n");
+      printf("testpiece out of boundaries\n");
       updateBoard();
       return 1;
     }
@@ -149,7 +149,7 @@ struct_piece rotate(struct_piece Piece,int i){
       int newY = Piece.x[j] * (-1);
       Piece.x[j] = newX;
       Piece.y[j] = newY;
-      printf("-After Rotate- Piece x,y:(%d,%d) \n",Piece.x[j],Piece.y[j]);
+      //printf("-After Rotate- Piece x,y:(%d,%d) \n",Piece.x[j],Piece.y[j]);
     }
   }
   if (i<0){  //counterclockwise rotation
@@ -158,7 +158,7 @@ struct_piece rotate(struct_piece Piece,int i){
       int newY = Piece.x[j];
       Piece.x[j] = newX;
       Piece.y[j] = newY;
-      printf("Piece.x[j]:%d \n Piece.y[j]:%d \n",Piece.x[j],Piece.y[j]);
+      //printf("Piece.x[j]:%d \n Piece.y[j]:%d \n",Piece.x[j],Piece.y[j]);
     }
   }
   return Piece;
@@ -167,7 +167,7 @@ int isLowest(struct_piece Piece){
   int i,y;
   for(i=0;i<4;i++){
     y = Piece.y[i] + Piece.yorigin;
-    printf("piece[y]: %d \n",y);
+    //printf("piece[y]: %d \n",y);
     if (y+1>21) return 1;
   }
   return 0;
@@ -178,55 +178,32 @@ struct_piece move(struct_piece Piece,int displacement){
   return Piece;
 }
 
-
-/*
-  int resetTestPiece(){
-  //testPiece = currPiece;
-  testPiece.type = currPiece.type;
-  testPiece.xorigin = currPiece.xorigin;
-  testPiece.yorigin = currPiece.yorigin;
-  int i;
-  for(i=0;i<4;i++){
-  testPiece.x[i] = currPiece.x[i];
-  testPiece.y[i] = currPiece.y[i];  
-  }
-  //printf("reseted test piece\n");
-  return 1;
-  }*/
-
 //return 0 -> can't make move || return 1 -> possible move
 int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   switch(action){
   case 0:
     //printf("rotating: in try\n");
-    rotate(testPiece,1);
-    removeFromBoard();
-    //printBoard();
-    //printf("just removed from board\n");
-    updateBoard();
-    testPiece = currPiece;
+    testPiece = rotate(testPiece,1);
     if (!collidesAt())return 1;
     else{return 0;}
  
   case 1:
-    rotate(testPiece,-1);
-    testPiece = currPiece;
-    return 1;
-    if (!collidesAt())return 1;
+    testPiece = rotate(testPiece,-1);
+     if (!collidesAt())return 1;
     else{return 0;}
   
   case 2:
     testPiece = move(testPiece,-1);
-    printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
-    printf("!collidesAt(): %d\n",!collidesAt());
+    //printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
+    //printf("!collidesAt(): %d\n",!collidesAt());
     if (!(collidesAt())){ return 1;}
     else{
-      printf("does collide\n");
+      //printf("does collide\n");
       return 0;}
 
   case 3:
     testPiece = move(testPiece,1);
-    printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
+    //printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     if (!collidesAt()) return 1;
     else{return 0;}
 
