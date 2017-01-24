@@ -57,7 +57,7 @@ int updateBoard(){
   for (i=0;i<4;i++){
     int x=currPiece.xorigin + currPiece.x[i];
     int y=currPiece.yorigin + currPiece.y[i];
-    printf("(x,y)%d: (%d,%d)\n",i,x,y);
+    //printf("(x,y)%d: (%d,%d)\n",i,x,y);
     grid[x][y]=currPiece.type;
   }
 }
@@ -177,19 +177,19 @@ struct_piece move(struct_piece Piece,int displacement){
 
 
 /*
-int resetTestPiece(){
+  int resetTestPiece(){
   //testPiece = currPiece;
   testPiece.type = currPiece.type;
   testPiece.xorigin = currPiece.xorigin;
   testPiece.yorigin = currPiece.yorigin;
   int i;
   for(i=0;i<4;i++){
-    testPiece.x[i] = currPiece.x[i];
-    testPiece.y[i] = currPiece.y[i];  
+  testPiece.x[i] = currPiece.x[i];
+  testPiece.y[i] = currPiece.y[i];  
   }
   //printf("reseted test piece\n");
   return 1;
-}*/
+  }*/
 
 //return 0 -> can't make move || return 1 -> possible move
 int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
@@ -261,9 +261,9 @@ int clearRows(){
       j+=1;
     }
   }
-return 1;
+  return 1;
 }
-  /*
+/*
 //TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
 Uint32 delay = (level*1.2) * 1000
 SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
@@ -314,20 +314,26 @@ int main( int argc, char* args[] )
 
       int close_requested = 0;
       clock_t counter = clock();
-      while(!close_requested){
-  //clear rows, updateboard
-	if (clock() - counter > 1000){
-	    if (try(4)){
-        removeFromBoard();
-        currPiece = dropDown(currPiece);
-        updateBoard();
-        counter = clock();
-      }
-      if(isLowest(currPiece)){
-        nextPiece();
 
-      }
-    }
+
+      //playing the game
+      
+      while(!close_requested){
+	printf("clock: %ld\n",clock());
+	printf("counter: %ld",counter);
+	//clear rows, updateboard
+	if (clock() - counter > 1000){
+	  if (try(4)){
+	    removeFromBoard();
+	    currPiece = dropDown(currPiece);
+	    updateBoard();
+	    counter = clock();
+	  }
+	  if(isLowest(currPiece)){
+	    nextPiece();
+
+	  }
+	}
 
 	//process events
 	SDL_Event event;
@@ -373,7 +379,7 @@ int main( int argc, char* args[] )
 		removeFromBoard();
 		currPiece = dropDown(currPiece);
 		updateBoard();
-		printf("printing board after dropdown now--");
+		//printf("printing board after dropdown now--");
 		//printBoard();	
 	      }
 	      break;
