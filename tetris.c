@@ -103,25 +103,35 @@ int initCurrPiece(){
 }
    
 int nextPiece(){
-  if (curr=7){  
+  if (curr==7){  
     shuffle(pieceQueue); //execute when you have gotten all 7 pieces
     curr = 0;
   }
-  curr++;
+  curr+=1;
   printf("curr= %d\n",curr);
   updateBoard();
-  //printBoard();
   switch (pieceQueue[curr]){
-  case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
-  case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
-  case 2: currPiece = L_BLOCK; testPiece = currPiece; break; 
-  case 3: currPiece = O_BLOCK; testPiece = currPiece; break;
-  case 4: currPiece = S_BLOCK; testPiece = currPiece; break; 
-  case 5: currPiece = T_BLOCK; testPiece = currPiece; break;
-  case 6: currPiece = Z_BLOCK; testPiece = currPiece; break;
+  case 0: if(isDie(I_BLOCK)) return 0; currPiece = I_BLOCK; testPiece = currPiece; break;
+  case 1: if(isDie(J_BLOCK)) return 0; currPiece = J_BLOCK; testPiece = currPiece; break;
+  case 2: if(isDie(L_BLOCK)) return 0; currPiece = L_BLOCK; testPiece = currPiece; break;
+  case 3: if(isDie(O_BLOCK)) return 0; currPiece = O_BLOCK; testPiece = currPiece; break;
+  case 4: if(isDie(S_BLOCK)) return 0; currPiece = S_BLOCK; testPiece = currPiece; break;
+  case 5: if(isDie(T_BLOCK)) return 0; currPiece = T_BLOCK; testPiece = currPiece; break;
+  case 6: if(isDie(Z_BLOCK)) return 0; currPiece = Z_BLOCK; testPiece = currPiece; break;
   }
+  return 1;
 }
 
+int isDie(struct_piece Piece){
+  int i;
+  for(i=0;i<4;i++){
+    int x = Piece.x[i] + Piece.xorigin;
+    int y = Piece.y[i] + Piece.yorigin;
+    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
+  }
+  return 0;
+}
+  
 int collidesAt(){
   int i;
   //printBoard();
@@ -131,7 +141,7 @@ int collidesAt(){
     //printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
     if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) {
-      printf("testpiece out of boundaries\n");
+      //printf("testpiece out of boundaries\n");
       updateBoard();
       return 1;
     }
@@ -164,18 +174,7 @@ struct_piece rotate(struct_piece Piece,int i){
   }
   return Piece;
 }
-		      
-int isLowest(struct_piece Piece){
-  int i,x,y;
-  for(i=0;i<4;i++){
-    x = Piece.x[i] + Piece.xorigin;
-    y = Piece.y[i] + Piece.yorigin;
-    //printf("piece[y]: %d \n",y);
-
-    if (y+1>21 || grid[x][y]) return 1;
-  }
-  return 0;
-}
+    
 
 struct_piece move(struct_piece Piece,int displacement){
   Piece.xorigin+=displacement;
@@ -219,10 +218,6 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   }
 }
 
-int isDie(){
-  return collidesAt(currPiece);
-}
-
 int deleteRow(int row){
   int i,j;
   for (j = row-1; j > 2; j--) {
@@ -235,7 +230,7 @@ int deleteRow(int row){
 int clearRows(){
   int gap,j,i;
   int score = 0;
-  for (j=22;j>2;j--){
+  for (j=21;j>2;j--){
     gap=0;
     for (i=0;i<10;i++){
       if(!grid[i][j]){
@@ -251,14 +246,6 @@ int clearRows(){
   }
   return pow(2,score-1);
 }
-/*
-//TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
-Uint32 delay = (level*1.2) * 1000
-SDL_TimerID gravity_id = SDL_AddTimer(Uint32            interval,
-SDL_TimerCallback callback,
-void*             param)
-*/
-
 
 int main( int argc, char* args[] )
 {
@@ -310,11 +297,20 @@ int main( int argc, char* args[] )
 	//printf("counter: %ld",counter);
 	P1_SCORE+= clearRows();
 	updateBoard();
-	if (currenttime - counter > 1000000){
+	if (currenttime - counter > 10000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
 	    updateBoard();
+	  }
+	  
+	  if(!try(4)){
+	    if (!nextPiece()){
+	      printf(">>P1_SCORE: %d\n",P1_SCORE);
+	      SDL_Delay(3000);
+	      close_requested=1;
+	    }
+	    nextPieceCounter = clock();
 	  }
 	  counter = clock();
 	}
@@ -347,7 +343,6 @@ int main( int argc, char* args[] )
 	      break;
 	    case SDL_SCANCODE_LEFT:
 	      if (try(2)){
-		printf("going to move left\n");
 		removeFromBoard();
 		currPiece = move(currPiece,-1);
 		updateBoard();
