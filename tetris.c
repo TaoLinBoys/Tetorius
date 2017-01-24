@@ -44,6 +44,24 @@ int pieceQueue[7];
 int P1_SCORE;
 int P2_SCORE;
 
+int removeFromBoard(){
+  int i;
+  for (i=0;i<4;i++){
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    grid[x][y]=0;
+  }
+}
+int updateBoard(){
+  int i;
+  for (i=0;i<4;i++){
+    int x=currPiece.xorigin + currPiece.x[i];
+    int y=currPiece.yorigin + currPiece.y[i];
+    printf("(x,y)%d: (%d,%d)\n",i,x,y);
+    grid[x][y]=currPiece.type;
+  }
+}
+
 //this is our backend board
 int board(){
   int i,j;
@@ -157,23 +175,7 @@ struct_piece move(struct_piece Piece,int displacement){
   return Piece;
 }
 
-int removeFromBoard(){
-  int i;
-  for (i=0;i<4;i++){
-    int x=currPiece.xorigin + currPiece.x[i];
-    int y=currPiece.yorigin + currPiece.y[i];
-    grid[x][y]=0;
-  }
-}
-int updateBoard(){
-  int i;
-  for (i=0;i<4;i++){
-    int x=currPiece.xorigin + currPiece.x[i];
-    int y=currPiece.yorigin + currPiece.y[i];
-    printf("(x,y)%d: (%d,%d)\n",i,x,y);
-    grid[x][y]=currPiece.type;
-  }
-}
+
 /*
 int resetTestPiece(){
   //testPiece = currPiece;
