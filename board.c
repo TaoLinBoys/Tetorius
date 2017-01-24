@@ -65,7 +65,7 @@ void colorBoard(SDL_Renderer* renderer,int** board,int player){
   curr.h = 23;
   
   for(i=0; i<10; i++){
-    for(j=2; j<21; j++){
+    for(j=2; j<22; j++){
       switch(board[i][j]){
       case 0:
 	SDL_SetRenderDrawColor( renderer,   0,   0,   0,   0 ); //black
