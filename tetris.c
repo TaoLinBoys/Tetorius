@@ -64,7 +64,6 @@ int updateBoard(){
   for (i=0;i<4;i++){
     int x=currPiece.xorigin + currPiece.x[i];
     int y=currPiece.yorigin + currPiece.y[i];
-    //printf("(x,y)%d: (%d,%d)\n",i,x,y);
     grid[x][y]=currPiece.type;
   }
 }
@@ -134,7 +133,6 @@ int nextPiece(){
   }
   curr+=1;
   usedHold=0;
-  printf("curr= %d\n",curr);
   updateBoard();
   switch (pieceQueue[curr]){
   case 0: if(isDie(I_BLOCK)) return 0; currPiece = I_BLOCK; testPiece = currPiece; break;
@@ -163,16 +161,13 @@ int collidesAt(){
   removeFromBoard();
   for(i=0;i<4;i++){
     int x = testPiece.x[i] + testPiece.xorigin;
-    //printf("--collidesAt x: %d \n" ,x);
     int y = testPiece.y[i] + testPiece.yorigin;
     if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) {
-      //printf("testpiece out of boundaries\n");
       updateBoard();
       return 1;
     }
   }
   updateBoard();
-  //printf("--doesn't collide\n");
   return 0;
 }
 
@@ -185,7 +180,6 @@ struct_piece rotate(struct_piece Piece,int i){
       int newY = Piece.x[j] * (-1);
       Piece.x[j] = newX;
       Piece.y[j] = newY;
-      //printf("-After Rotate- Piece x,y:(%d,%d) \n",Piece.x[j],Piece.y[j]);
     }
   }
   if (i<0){  //counterclockwise rotation
@@ -194,7 +188,6 @@ struct_piece rotate(struct_piece Piece,int i){
       int newY = Piece.x[j];
       Piece.x[j] = newX;
       Piece.y[j] = newY;
-      //printf("Piece.x[j]:%d \n Piece.y[j]:%d \n",Piece.x[j],Piece.y[j]);
     }
   }
   return Piece;
@@ -217,21 +210,16 @@ int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
  
   case 1:
     testPiece = rotate(testPiece,-1);
-     if (!collidesAt())return 1;
+    if (!collidesAt())return 1;
     else{return 0;}
   
   case 2:
     testPiece = move(testPiece,-1);
-    //printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
-    //printf("!collidesAt(): %d\n",!collidesAt());
     if (!(collidesAt())){ return 1;}
-    else{
-      //printf("does collide\n");
-      return 0;}
+    else{return 0;}
 
   case 3:
     testPiece = move(testPiece,1);
-    //printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
     if (!collidesAt()) return 1;
     else{return 0;}
 
@@ -301,10 +289,7 @@ int main( int argc, char* args[] )
       
       //INITIALIZING BOARD AND PIECES (backend)
       board();
-      printf("board initialized\n");
-      printf("I_BLOCK.xorigin=%d\n",I_BLOCK.xorigin);
       initCurrPiece();
-      printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);
       updateBoard();
       drawBoard(renderer,1);
       
@@ -317,8 +302,6 @@ int main( int argc, char* args[] )
       clock_t counter = clock();
       //playing the game
       while(!close_requested){
-	//printf("currenttime: %ld\n",currenttime);
-	//printf("counter: %ld",counter);
 	if (currenttime - counter > 1000000){
 	  if (try(4)){
 	    removeFromBoard();
@@ -350,20 +333,16 @@ int main( int argc, char* args[] )
 	    switch(event.key.keysym.scancode){
 	    case SDL_SCANCODE_RCTRL:
 	      if (try(0)){
-		//printf("rotating now\n");
 		removeFromBoard();
 		currPiece = rotate(currPiece,1);
 		updateBoard();
-		//printBoard();
 	      }
 	      break;
 	    case SDL_SCANCODE_LCTRL:
 	      if (try(0)){
-		//printf("rotating now\n");
 		removeFromBoard();
 		currPiece = rotate(currPiece,1);
 		updateBoard();
-		//printBoard();
 	      }
 	      break;
 
@@ -393,19 +372,15 @@ int main( int argc, char* args[] )
 		removeFromBoard();
 		currPiece = dropDown(currPiece);
 		updateBoard();
-		//printf("printing board after dropdown now--");
-		//printBoard();	
 	      }
 	      break;
 	    case SDL_SCANCODE_SPACE:
 	      while (try(4)){
 		removeFromBoard();
 		currPiece = dropDown(currPiece);
-		updateBoard();
 	      }
 	      if (nextPiece()){
 		P1_SCORE+= clearRows();
-		updateBoard();
 	      }
 	      updateBoard();
 	      break;
