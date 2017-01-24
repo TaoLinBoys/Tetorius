@@ -294,7 +294,7 @@ int main( int argc, char* args[] )
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
-	if (currenttime - counter > CLOCKS_PER_SEC){
+	if (currenttime - counter > 40000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
@@ -302,9 +302,11 @@ int main( int argc, char* args[] )
 	  }
 	  
 	  if(!try(4)){
-	    P1_SCORE+= clearRows();
-	    updateBoard();
-	    if (!nextPiece()){
+	    if (nextPiece()){
+	      P1_SCORE+= clearRows();
+	      updateBoard();
+	    }
+	    else{
 	      printf(">>P1_SCORE: %d\n",P1_SCORE);
 	      SDL_Delay(3000);
 	      close_requested=1;
