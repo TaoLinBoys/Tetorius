@@ -109,7 +109,7 @@ int nextPiece(){
   curr++;
   printf("curr= %d\n",curr);
   updateBoard();
-  printBoard();
+  //printBoard();
   switch (pieceQueue[curr]){
   case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
   case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
@@ -300,7 +300,7 @@ int main( int argc, char* args[] )
       
       clock_t currenttime = clock();
       clock_t counter = clock();
-
+      clock_t nextPieceCounter = clock();
       //playing the game
       
       while(!close_requested){
@@ -312,10 +312,6 @@ int main( int argc, char* args[] )
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
 	    updateBoard();
-	  }
-	  if(!try(4)){
-	    nextPiece();
-
 	  }
 	  counter = clock();
 	}
