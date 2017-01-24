@@ -9,11 +9,14 @@
 void runGame( char * s , int sd );
 void sub_server( int sd );
 
-int coop = 0;
+int coop = 2;
 int p1, p2; //sock desc of player 1 and 2
 char coopMsg1[] = "WAITING FOR SECOND PLAYER";
-char coopMsg2[] = "STARTING GAME";
+char coopMsg2[] = "PLAYER2 HAS JOINED";
 char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+char returnWait[] = "wait";
+char returnRun[] = "runscore";
+char returnFull[] = "Room is currently full";
 
 int main() {
 
@@ -48,7 +51,6 @@ void sub_server( int sd ) {
 
     printf("[SERVER %d] received: %s\n", getpid(), buffer );
     runGame( buffer , sd );
-    //write( sd, buffer, sizeof(buffer));    
   }
   
 }
@@ -59,10 +61,16 @@ void runGame( char * s , int sd ) {
     //printf("%d\n", coop);
     if(coop == 0){
       coop++;
-      //printf("%d\n", coop);
-      p1 = sd;
-      //s = coopMsg1;
-      write( sd, coopMsg1, sizeof(coopMsg1));
+      p1 = sd; 
+      write( sd, coopMsg1, sizeof(coopMsg1) );
+    }
+    else if(coop == 1){
+      coop++;
+      p2 = sd; //setting p2
+      write( sd, returnRun, sizeof(returnRun) );
+    }
+    else if(coop == 2){
+      write( sd, returnFull,sizeof(returnFull) );
     }
   }
 }

@@ -5,9 +5,14 @@
 
 #include "networking.h"
 
+int coop = 0;
 char coopMsg1[] = "WAITING FOR SECOND PLAYER";
 char coopMsg2[] = "STARTING GAME";
 char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+char returnWait[] = "wait";
+char returnRun[] = "runscore";
+char returnFull[] = "Room is currently full";
+int score;
 
 int main( int argc, char *argv[] ) {
 
@@ -40,9 +45,14 @@ int main( int argc, char *argv[] ) {
 	system("./tetris");
       }
     }
-    else if(strcmp(buffer, coopMsg1) == 0){
+    else if(strcmp(buffer, coopMsg1) == 0){ //waiting for 2nd p
       printf("%s\n", buffer);
+      char temp[256];
+      read( sd, temp, 256 );
       
+    }
+    else if(strcmp(buffer, returnFull) == 0){
+      printf("%s\n", buffer);
     }
   }
 
