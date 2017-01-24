@@ -367,7 +367,13 @@ int main( int argc, char* args[] )
 		//printBoard();	
 	      }
 	      break;
-	    }
+	    case SDL_SCANCODE_SPACE:
+	      while (try(4)){
+		removeFromBoard();
+		currPiece = dropDown(currPiece);
+		updateBoard();
+	      }
+	      break;
 	    //printBoard();
 	  }
 	}
