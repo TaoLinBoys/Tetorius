@@ -86,6 +86,16 @@ int printBoard(){
   }
 }
 
+int isDie(struct_piece Piece){
+  int i;
+  for(i=0;i<4;i++){
+    int x = Piece.x[i] + Piece.xorigin;
+    int y = Piece.y[i] + Piece.yorigin;
+    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
+  }
+  return 0;
+}
+
 int initCurrPiece(){
   int i;
   for(i=0;i<7;i++) pieceQueue[i] = i;
@@ -108,7 +118,7 @@ int nextPiece(){
     curr = 0;
   }
   curr+=1;
-  printf("curr= %d\n",curr);
+  //printf("curr= %d\n",curr);
   updateBoard();
   switch (pieceQueue[curr]){
   case 0: if(isDie(I_BLOCK)) return 0; currPiece = I_BLOCK; testPiece = currPiece; break;
@@ -122,15 +132,7 @@ int nextPiece(){
   return 1;
 }
 
-int isDie(struct_piece Piece){
-  int i;
-  for(i=0;i<4;i++){
-    int x = Piece.x[i] + Piece.xorigin;
-    int y = Piece.y[i] + Piece.yorigin;
-    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
-  }
-  return 0;
-}
+
   
 int collidesAt(){
   int i;
