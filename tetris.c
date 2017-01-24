@@ -90,6 +90,15 @@ int nextPiece(){
   }
   curr++;
   printf("curr= %d\n",curr);
+  switch (pieceQueue[curr]){
+  case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
+  case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
+  case 2: currPiece = L_BLOCK; testPiece = currPiece; break; 
+  case 3: currPiece = O_BLOCK; testPiece = currPiece; break;
+  case 4: currPiece = S_BLOCK; testPiece = currPiece; break; 
+  case 5: currPiece = T_BLOCK; testPiece = currPiece; break;
+  case 6: currPiece = Z_BLOCK; testPiece = currPiece; break;
+  }
 }
 
 int collidesAt(){
@@ -164,7 +173,7 @@ int updateBoard(){
     grid[x][y]=currPiece.type;
   }
 }
-
+/*
 int resetTestPiece(){
   //testPiece = currPiece;
   testPiece.type = currPiece.type;
@@ -177,49 +186,42 @@ int resetTestPiece(){
   }
   //printf("reseted test piece\n");
   return 1;
-}
+}*/
 
 //return 0 -> can't make move || return 1 -> possible move
 int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
-  int valid;
   switch(action){
   case 0:
     //printf("rotating: in try\n");
     rotate(testPiece,1);
     removeFromBoard();
     //printBoard();
-    printf("just removed from board\n");
-    valid = !(collidesAt());
-    printf("valid: %d \n",valid);
+    //printf("just removed from board\n");
     updateBoard();
-    resetTestPiece();
-    if (valid)return 1;
+    testPiece = currPiece;
+    if (!collidesAt())return 1;
     else{return 0;}
  
   case 1:
     rotate(testPiece,-1);
-    valid = !(collidesAt());
-    resetTestPiece();
-    if (valid) {
-      return 1;
-      printf("asdas");}
+    testPiece = currPiece;
+    return 1;
+    if (!collidesAt())return 1;
     else{return 0;}
   
   case 2:
     move(testPiece,-1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
-    printf("valid: %d\n",valid);
-    int valid = !(collidesAt());
-    resetTestPiece();
-    if (valid) return 1;
+    printf("!collidesAt(): %d\n",!collidesAt());
+    testPiece = currPiece;
+    if (!collidesAt()) return 1;
     else{return 0;}
 
   case 3:
     move(testPiece,1);
     printf("AFTER MOVE xorigin of testpiece:%d \n", testPiece.xorigin);
-    valid = !(collidesAt());
-    resetTestPiece();
-    if (valid) return 1;
+    testPiece = currPiece;
+    if (!collidesAt()) return 1;
     else{return 0;}
 
   case 4:
@@ -310,7 +312,7 @@ int main( int argc, char* args[] )
       int close_requested = 0;
       clock_t counter = clock();
       while(!close_requested){
-        
+  //clear rows, updateboard
 	if (clock() - counter > 1000){
 	    if (try(4)){
         removeFromBoard();
@@ -318,7 +320,12 @@ int main( int argc, char* args[] )
         updateBoard();
         counter = clock();
       }
+      if(isLowest(currPiece)){
+        nextPiece();
+
+      }
     }
+
 	//process events
 	SDL_Event event;
 	while (SDL_PollEvent(&event)){
@@ -371,7 +378,7 @@ int main( int argc, char* args[] )
 	    //printBoard();
 	  }
 	}
-	resetTestPiece();
+	testPiece = currPiece;
 	colorBoard(renderer,grid,1);
 	SDL_RenderPresent(renderer);
 	//wait 1/30th of a second
