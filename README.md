@@ -9,9 +9,9 @@ SDL2
 "apt-get install libsdl2-dev"
 
 ##To compile, simply type make in a terminal.
-./server
+./server in a terminal
 
-./client
+./client in another terminal
 
 Follow the prompts asking for either single/coop mode.
 
