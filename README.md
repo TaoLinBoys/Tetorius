@@ -14,7 +14,7 @@ To compile, simply type make in a terminal.
 Follow the prompts asking for either single/coop mode.
 
 List of files:
-board.c
+board.c\n\n
 board.h
 client.c
 makefile
