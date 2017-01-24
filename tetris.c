@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #define SDL_MAIN_HANDLED
 
@@ -222,7 +223,6 @@ int isDie(){
   return collidesAt(currPiece);
 }
 
-//this is prob wrong. i'll fix later
 int deleteRow(int row){
   int i,j;
   for (j = row-1; j > 2; j--) {
@@ -231,8 +231,10 @@ int deleteRow(int row){
     }
   }
 }
+
 int clearRows(){
   int gap,j,i;
+  int score = 0;
   for (j=22;j>2;j--){
     gap=0;
     for (i=0;i<10;i++){
@@ -243,10 +245,11 @@ int clearRows(){
     }
     if(!gap){
       deleteRow(j);
-      j+=1;
+      score++;
+      j++;
     }
   }
-  return 1;
+  return pow(2,score-1);
 }
 /*
 //TIMERS: https://wiki.libsdl.org/SDL_AddTimer?highlight=%28%5CbCategoryTimer%5Cb%29%7C%28CategoryEnum%29%7C%28CategoryStruc%29
@@ -305,7 +308,8 @@ int main( int argc, char* args[] )
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
-	//clear rows, updateboard
+	P1_SCORE+= clearRows();
+	updateBoard();
 	if (currenttime - counter > 1000000){
 	  if (try(4)){
 	    removeFromBoard();

@@ -3,7 +3,7 @@ files = pieces.c board.c tetris.c
 all: tetris server client
 
 tetris: $(files) 
-	gcc $(files) $(shell pkg-config --cflags --libs sdl2) -o tetris
+	gcc $(files) $(shell pkg-config --cflags --libs sdl2) -o tetris -lm
 
 server: server.o networking.o
 	gcc -o server server.o networking.o 
