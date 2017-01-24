@@ -290,14 +290,11 @@ int main( int argc, char* args[] )
       
       clock_t currenttime = clock();
       clock_t counter = clock();
-      clock_t nextPieceCounter = clock();
       //playing the game
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
-	P1_SCORE+= clearRows();
-	updateBoard();
-	if (currenttime - counter > 10000){
+	if (currenttime - counter > CLOCKS_PER_SEC){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
@@ -305,12 +302,13 @@ int main( int argc, char* args[] )
 	  }
 	  
 	  if(!try(4)){
+	    P1_SCORE+= clearRows();
+	    updateBoard();
 	    if (!nextPiece()){
 	      printf(">>P1_SCORE: %d\n",P1_SCORE);
 	      SDL_Delay(3000);
 	      close_requested=1;
 	    }
-	    nextPieceCounter = clock();
 	  }
 	  counter = clock();
 	}
