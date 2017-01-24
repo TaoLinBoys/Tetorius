@@ -1,13 +1,6 @@
 #include "pieces.h"
 #include "board.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <time.h>
-#include <math.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include "tetris.h"
 
 #define SDL_MAIN_HANDLED
 
@@ -91,15 +84,6 @@ int printBoard(){
   }
 }
 
-int isDie(struct_piece Piece){
-  int i;
-  for(i=0;i<4;i++){
-    int x = Piece.x[i] + Piece.xorigin;
-    int y = Piece.y[i] + Piece.yorigin;
-    if(x < 0 || x > 9 || y < 0 || y > 21 || grid[x][y]) return 1;
-  }
-  return 0;
-}
 
 int initCurrPiece(){
   int i;
@@ -135,13 +119,13 @@ int nextPiece(){
   usedHold=0;
   updateBoard();
   switch (pieceQueue[curr]){
-  case 0: if(isDie(I_BLOCK)) return 0; currPiece = I_BLOCK; testPiece = currPiece; break;
-  case 1: if(isDie(J_BLOCK)) return 0; currPiece = J_BLOCK; testPiece = currPiece; break;
-  case 2: if(isDie(L_BLOCK)) return 0; currPiece = L_BLOCK; testPiece = currPiece; break;
-  case 3: if(isDie(O_BLOCK)) return 0; currPiece = O_BLOCK; testPiece = currPiece; break;
-  case 4: if(isDie(S_BLOCK)) return 0; currPiece = S_BLOCK; testPiece = currPiece; break;
-  case 5: if(isDie(T_BLOCK)) return 0; currPiece = T_BLOCK; testPiece = currPiece; break;
-  case 6: if(isDie(Z_BLOCK)) return 0; currPiece = Z_BLOCK; testPiece = currPiece; break;
+  case 0: if(isDie(I_BLOCK,grid)) return 0; currPiece = I_BLOCK; testPiece = currPiece; break;
+  case 1: if(isDie(J_BLOCK,grid)) return 0; currPiece = J_BLOCK; testPiece = currPiece; break;
+  case 2: if(isDie(L_BLOCK,grid)) return 0; currPiece = L_BLOCK; testPiece = currPiece; break;
+  case 3: if(isDie(O_BLOCK,grid)) return 0; currPiece = O_BLOCK; testPiece = currPiece; break;
+  case 4: if(isDie(S_BLOCK,grid)) return 0; currPiece = S_BLOCK; testPiece = currPiece; break;
+  case 5: if(isDie(T_BLOCK,grid)) return 0; currPiece = T_BLOCK; testPiece = currPiece; break;
+  case 6: if(isDie(Z_BLOCK,grid)) return 0; currPiece = Z_BLOCK; testPiece = currPiece; break;
   }
   return 1;
 }
@@ -170,35 +154,7 @@ int collidesAt(){
   updateBoard();
   return 0;
 }
-
-struct_piece rotate(struct_piece Piece,int i){
-  //if O_BLOCK(square) don't rotate
-  int j; 
-  if (i>0){  //clockwise rotation
-    for (j=0; j<4;j++){
-      int newX = Piece.y[j];
-      int newY = Piece.x[j] * (-1);
-      Piece.x[j] = newX;
-      Piece.y[j] = newY;
-    }
-  }
-  if (i<0){  //counterclockwise rotation
-    for (j=0; j<4;j++){
-      int newX = Piece.y[j] * (-1);
-      int newY = Piece.x[j];
-      Piece.x[j] = newX;
-      Piece.y[j] = newY;
-    }
-  }
-  return Piece;
-}
-    
-
-struct_piece move(struct_piece Piece,int displacement){
-  Piece.xorigin+=displacement;
-  return Piece;
-}
-
+   
 //return 0 -> can't make move || return 1 -> possible move
 int try(int action){ //{0:+rotate,1:-rotate,2:leftmove,3:rightmove,4:down}
   switch(action){
@@ -259,6 +215,9 @@ int clearRows(){
   }
   return pow(2,score-1);
 }
+
+
+
 
 int main( int argc, char* args[] )
 {
@@ -400,31 +359,14 @@ int main( int argc, char* args[] )
 	SDL_RenderPresent(renderer);
       }
 
-      //write score to scoreboard
+      //write score
       umask(0);
-      int scoreboardfd = open("coopscore.txt",O_CREAT | O_WRONLY, 0666);
-      
-      if (scoreboardfd == -1){
-	printf("error, couldnt open with read\n");
-      }
-      /*
-      int filesize = lseek(scoreboardfd,0,SEEK_END);
-      char scores[filesize];
-      read(scoreboardfd,scores,filesize);
-      close(scoreboardfd);
-      
-      scoreboardfd = open("coopscore.txt",O_WRITE, 0666);
-      if (scoreboardfd == -1){
-	printf("error, couldnt open with append\n");
-      }
-      */
+      int fd = open("coopscore.txt",O_CREAT | O_WRONLY, 0666);
+
       char score[10];
       sprintf(score,"%d",P1_SCORE);
-      printf("%d\n",scoreboardfd);
-      printf("%s\n",score);
-      printf("%d\n",strlen(score));
-      write(scoreboardfd,score,strlen(score));
-      close(scoreboardfd);
+      write(fd,score,strlen(score));
+      close(fd);
       
     }
   }

@@ -15,7 +15,9 @@ typedef struct piece{
 
 struct_piece rotate(struct_piece Piece,int i);
 struct_piece dropDown(struct_piece Piece);
-
+int isDie(struct_piece Piece,int**grid);
+struct_piece rotate(struct_piece Piece,int i);
+struct_piece move(struct_piece Piece,int displacement);
 //helpers
 int shuffle(int arr[]);
 int swap(int *a, int *b);
