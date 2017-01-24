@@ -310,12 +310,15 @@ int main( int argc, char* args[] )
       int close_requested = 0;
       clock_t counter = clock();
       while(!close_requested){
+        
 	if (clock() - counter > 1000){
-	    removeFromBoard();
-	    currPiece = dropDown(currPiece);
-	    updateBoard();
-	    counter = clock();
-	}
+	    if (try(4)){
+        removeFromBoard();
+        currPiece = dropDown(currPiece);
+        updateBoard();
+        counter = clock();
+      }
+    }
 	//process events
 	SDL_Event event;
 	while (SDL_PollEvent(&event)){
