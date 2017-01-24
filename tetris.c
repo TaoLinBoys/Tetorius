@@ -169,6 +169,7 @@ int isLowest(struct_piece Piece){
     y = Piece.y[i] + Piece.yorigin;
     //printf("piece[y]: %d \n",y);
     if (y+1>21) return 1;
+    
   }
   return 0;
 }
@@ -282,7 +283,6 @@ int main( int argc, char* args[] )
       //INITIALIZING BOARD AND PIECES (backend)
       board();
       printf("board initialized\n");
-      //initPieces(I_BLOCK,J_BLOCK,L_BLOCK,O_BLOCK,S_BLOCK,T_BLOCK,Z_BLOCK);
       printf("I_BLOCK.xorigin=%d\n",I_BLOCK.xorigin);
       initCurrPiece();
       printf("curr = %d, pieceQueue[curr] = %d\n",curr,pieceQueue[curr]);

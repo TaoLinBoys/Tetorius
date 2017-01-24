@@ -47,6 +47,8 @@ void drawBoard(SDL_Renderer* renderer,int player){
 		       BOARD_HEIGHT + P1_DISPLACEMENT_Y);
   }
   SDL_RenderPresent(renderer);
+  //reset color blending
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 }
 
 void colorBoard(SDL_Renderer* renderer,int** board,int player){
