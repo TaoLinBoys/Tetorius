@@ -325,7 +325,7 @@ int main( int argc, char* args[] )
 	    break;
 	  case SDL_KEYDOWN:
 	    switch(event.key.keysym.scancode){
-	    case SDL_SCANCODE_UP:
+	    case SDL_SCANCODE_RCTRL:
 	      if (try(0)){
 		//printf("rotating now\n");
 		removeFromBoard();
@@ -334,7 +334,7 @@ int main( int argc, char* args[] )
 		//printBoard();
 	      }
 	      break;
-	    case SDL_SCANCODE_RCTRL:
+	    case SDL_SCANCODE_UP:
 	      if (try(1)){
 		removeFromBoard();
 		currPiece = rotate(currPiece,-1);
