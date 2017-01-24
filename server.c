@@ -12,8 +12,11 @@ void sub_server( int sd );
 int coop = 0;
 int p1, p2; //sock desc of player 1 and 2
 char coopMsg1[] = "WAITING FOR SECOND PLAYER";
-char coopMsg2[] = "STARTING GAME";
+char coopMsg2[] = "PLAYER2 HAS JOINED";
 char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+char returnWait[] = "wait";
+char returnRun[] = "runscore";
+char returnFull[] = "Room is currently full";
 
 int main() {
 
@@ -48,7 +51,6 @@ void sub_server( int sd ) {
 
     printf("[SERVER %d] received: %s\n", getpid(), buffer );
     runGame( buffer , sd );
-    //write( sd, buffer, sizeof(buffer));    
   }
   
 }
@@ -56,14 +58,33 @@ void sub_server( int sd ) {
 
 void runGame( char * s , int sd ) {
   if(strcmp(s, "coop") == 0){
-    //printf("%d\n", coop);
+
+
+    //room empty
     if(coop == 0){
       coop++;
-      //printf("%d\n", coop);
-      p1 = sd;
-      //s = coopMsg1;
-      write( sd, coopMsg1, sizeof(coopMsg1));
+      p1 = sd; 
+      write( sd, coopMsg1, sizeof(coopMsg1) );
+      while(coop == 1){}
+      write( sd, coopMsg2, sizeof(coopMsg2) );
+    }
+
+
+
+    //only one person
+    else if(coop == 1){
+      coop++;
+      p2 = sd; //setting p2
+      write( sd, returnRun, sizeof(returnRun) );
+    }
+
+
+
+    //room is full, denies access
+    else if(coop == 2){
+      write( sd, returnFull,sizeof(returnFull) );
     }
   }
 }
+
 

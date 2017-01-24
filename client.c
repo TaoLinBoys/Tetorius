@@ -5,9 +5,14 @@
 
 #include "networking.h"
 
+int coop = 0;
 char coopMsg1[] = "WAITING FOR SECOND PLAYER";
 char coopMsg2[] = "STARTING GAME";
 char coopMsg3[] = "WAITING FOR LOBBY TO EMPTY";
+char returnWait[] = "wait";
+char returnRun[] = "runscore";
+char returnFull[] = "Room is currently full";
+int score;
 
 int main( int argc, char *argv[] ) {
 
@@ -33,19 +38,34 @@ int main( int argc, char *argv[] ) {
   
     write( sd, buffer, sizeof(buffer) );
     read( sd, buffer, sizeof(buffer) );
-    
+
+    //singleplayer
     if(strcmp(buffer, "single") == 0){
       int temp = fork();
       if( temp == 0 ){
 	system("./tetris");
       }
     }
+
+
+    //waiting for a second player
     else if(strcmp(buffer, coopMsg1) == 0){
       printf("%s\n", buffer);
-      
+      char temp[256];
+      read( sd, temp, 256 );//gets a response when another player joins
+      int tempF = fork();
+      if( tempF == 0 ){
+	system("./tetris");
+      }
+    }
+
+
+    
+    //room's full
+    else if(strcmp(buffer, returnFull) == 0){
+      printf("%s\n", buffer);
     }
   }
 
   return 0;
 }
-
