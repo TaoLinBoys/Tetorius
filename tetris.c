@@ -342,6 +342,16 @@ int main( int argc, char* args[] )
 		//printBoard();
 	      }
 	      break;
+	    case SDL_SCANCODE_LCTRL:
+	      if (try(0)){
+		//printf("rotating now\n");
+		removeFromBoard();
+		currPiece = rotate(currPiece,1);
+		updateBoard();
+		//printBoard();
+	      }
+	      break;
+
 	    case SDL_SCANCODE_UP:
 	      if (try(1)){
 		removeFromBoard();
