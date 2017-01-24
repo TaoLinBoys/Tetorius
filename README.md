@@ -38,6 +38,8 @@ server.c
 
 tetris.c
 
+tetris.h
+
 #How to Play:
 ##Keys:
 Up - rotate clockwise
