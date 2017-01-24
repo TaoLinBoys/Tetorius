@@ -1,4 +1,4 @@
-files = pieces.c board.c tetris.c
+files = pieces.c board.c tetris.c -lm
 
 all: tetris server client
 

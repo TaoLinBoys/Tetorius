@@ -47,6 +47,8 @@ void drawBoard(SDL_Renderer* renderer,int player){
 		       BOARD_HEIGHT + P1_DISPLACEMENT_Y);
   }
   SDL_RenderPresent(renderer);
+  //reset color blending
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 }
 
 void colorBoard(SDL_Renderer* renderer,int** board,int player){
@@ -61,8 +63,8 @@ void colorBoard(SDL_Renderer* renderer,int** board,int player){
     displacementY = P2_DISPLACEMENT_Y;
   }
   
-  curr.w = 24;
-  curr.h = 24;
+  curr.w = 23;
+  curr.h = 23;
   
   for(i=0; i<10; i++){
     for(j=2; j<22; j++){
