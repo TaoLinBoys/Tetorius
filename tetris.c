@@ -294,14 +294,12 @@ int main( int argc, char* args[] )
       while(!close_requested){
 	//printf("currenttime: %ld\n",currenttime);
 	//printf("counter: %ld",counter);
-	if (currenttime - counter > 40000){
+	if (currenttime - counter > 1000000){
 	  if (try(4)){
 	    removeFromBoard();
 	    currPiece = dropDown(currPiece);
 	    updateBoard();
-	  }
-	  
-	  if(!try(4)){
+	  }else{
 	    if (nextPiece()){
 	      P1_SCORE+= clearRows();
 	      updateBoard();
@@ -380,6 +378,11 @@ int main( int argc, char* args[] )
 		currPiece = dropDown(currPiece);
 		updateBoard();
 	      }
+	      if (nextPiece()){
+		P1_SCORE+= clearRows();
+		updateBoard();
+	      }
+	      updateBoard();
 	      break;
 	    }
 	  }
