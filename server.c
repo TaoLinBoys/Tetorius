@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "networking.h"
 
@@ -63,7 +64,7 @@ void runGame( char * s , int sd ) {
     //room empty
     if(coop == 0){
       coop++;
-      p1 = sd; 
+      printf("%d\n", coop);
       write( sd, coopMsg1, sizeof(coopMsg1) );
       while(coop == 1){}
       write( sd, coopMsg2, sizeof(coopMsg2) );
@@ -74,8 +75,8 @@ void runGame( char * s , int sd ) {
     //only one person
     else if(coop == 1){
       coop++;
-      p2 = sd; //setting p2
-      write( sd, returnRun, sizeof(returnRun) );
+      printf("%d\n", coop);
+      write( sd, returnRun , sizeof(returnRun) );
     }
 
 

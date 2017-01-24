@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
 
 #include "networking.h"
 
@@ -13,6 +17,8 @@ char returnWait[] = "wait";
 char returnRun[] = "runscore";
 char returnFull[] = "Room is currently full";
 int score;
+
+void sendScore( int sd );
 
 int main( int argc, char *argv[] ) {
 
@@ -56,9 +62,18 @@ int main( int argc, char *argv[] ) {
       int tempF = fork();
       if( tempF == 0 ){
 	system("./tetris");
+        sendScore(sd);
       }
     }
 
+
+    else if(strcmp(buffer, returnRun) == 0){
+      int temp = fork();
+      if( temp == 0 ){
+	system("./tetris");
+        sendScore(sd);
+      }
+    }
 
     
     //room's full
@@ -67,5 +82,19 @@ int main( int argc, char *argv[] ) {
     }
   }
 
+  
   return 0;
+}
+
+
+
+void sendScore( int sd ){
+  char score[10];
+  
+  umask(0);
+  int fd = open("coopscore.txt", O_RDONLY, 0666);
+  read(fd, score, strlen(score));
+  close(fd);
+
+  write( sd, score, sizeof(score) );
 }
