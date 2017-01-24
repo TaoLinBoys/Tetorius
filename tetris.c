@@ -90,6 +90,7 @@ int nextPiece(){
   }
   curr++;
   printf("curr= %d\n",curr);
+  updateBoard();
   switch (pieceQueue[curr]){
   case 0: currPiece = I_BLOCK; testPiece = currPiece; break;
   case 1: currPiece = J_BLOCK; testPiece = currPiece; break;
