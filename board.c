@@ -124,7 +124,6 @@ void colorHold(SDL_Renderer* renderer, struct_piece Piece){
       SDL_RenderFillRect(renderer,&curr);
     }
   }
-  printf("Piece.type:%d\n",Piece.type);
   switch(Piece.type){
   case 1: SDL_SetRenderDrawColor(renderer,   0, 255, 255, 255 );break; //I cyan
   case 2: SDL_SetRenderDrawColor(renderer,   0,   0, 255, 255 );break; //
